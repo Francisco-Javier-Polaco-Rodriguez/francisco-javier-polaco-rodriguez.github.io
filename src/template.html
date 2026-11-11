@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{meta_title}}</title>
+<meta name="description" content="{{meta_desc}}">
+<meta name="author" content="Francisco Javier Polanco-Rodríguez">
+<meta name="theme-color" content="#F6F8FB" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A1626" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="{{meta_title}}">
+<meta property="og:description" content="{{meta_desc}}">
+<meta property="og:type" content="profile">
+<meta property="og:image" content="{{og_image}}">
+<meta name="twitter:card" content="summary_large_image">
+{{hreflang}}
+<link rel="icon" href="{{root}}assets/media/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<link rel="stylesheet" href="{{root}}assets/css/site.css">
+<script type="application/ld+json">{{jsonld}}</script>
+</head>
+<body>
+<a class="skip" href="#main">{{skip}}</a>
+
+<header class="bar">
+  <div class="bar-in">
+    <a class="brand" href="{{home}}"><span class="brand-init">F. J. </span>Polanco-Rodríguez</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#research">{{nav_research}}</a>
+      <a href="#thesis">{{nav_thesis}}</a>
+      <a href="#simulations">{{nav_sims}}</a>
+      <a href="#teaching">{{nav_teaching}}</a>
+      <a href="#about">{{nav_about}}</a>
+      <a href="#contact">{{nav_contact}}</a>
+    </nav>
+    <div class="bar-end">
+      <a class="pill" href="#publications" data-open-pubs>{{btn_pubs}}</a>
+      <nav class="langs" aria-label="Language">{{langs}}</nav>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero" aria-labelledby="name">
+  <figure class="burst">
+    <canvas id="burst" role="img" aria-label="{{anim_label}}"></canvas>
+    <button class="burst-toggle" type="button" aria-pressed="false" aria-label="{{anim_pause}}">
+      <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="2.6" height="10" rx="1"/><rect x="9.4" y="3" width="2.6" height="10" rx="1"/></svg>
+      <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6c0 .5.5.8.9.5l7.3-4.8a.6.6 0 0 0 0-1L5.9 2.7c-.4-.3-.9 0-.9.5Z"/></svg>
+    </button>
+    <figcaption class="wrap burst-cap">
+      <ul class="legend">
+        <li style="--c: var(--accent)"><span>{{legend_flare}}</span></li>
+        <li style="--c: var(--beam)"><span>{{legend_beam}}</span></li>
+        <li style="--c: var(--langmuir)"><span>{{legend_langmuir}}</span></li>
+        <li style="--c: var(--radio)"><span>{{legend_radio}}</span></li>
+      </ul>
+      <p>{{anim_caption}}</p>
+    </figcaption>
+  </figure>
+
+  <div class="wrap hero-text">
+    <p class="role">{{hero_role}}</p>
+    <h1 id="name">Francisco Javier <span>Polanco-Rodríguez</span></h1>
+    <p class="lead">{{hero_lead}}</p>
+    <p class="sub">{{hero_sub}}</p>
+    <div class="actions">
+      <a class="btn primary" href="#publications" data-open-pubs>{{btn_pubs}} <span class="count">{{pub_count}}</span></a>
+      <a class="btn" href="{{root}}assets/cv/CV_Polanco-Rodriguez.pdf" download>{{btn_cv}}</a>
+      <a class="btn quiet" href="#contact">{{btn_contact}}</a>
+    </div>
+    {{profiles}}
+  </div>
+</section>
+
+<section id="research" class="block" aria-labelledby="research-h">
+  <div class="wrap">
+    <h2 id="research-h">{{research_h}}</h2>
+    <p class="intro">{{research_intro}}</p>
+    <figure class="spectro">
+      <img src="{{root}}assets/media/typeIII_solo.webp" width="1708" height="960" loading="lazy" alt="{{spec_alt}}">
+      <figcaption>
+        <h3>{{spec_h}}</h3>
+        <p>{{spec_text}}</p>
+        <p class="credit">{{spec_credit}}</p>
+      </figcaption>
+    </figure>
+    <ul class="interests">{{interests_html}}</ul>
+  </div>
+</section>
+
+<section id="thesis" class="block" aria-labelledby="thesis-h">
+  <div class="wrap">
+    <h2 id="thesis-h">{{thesis_h}}</h2>
+    <p class="thesis-title" lang="en">Electromagnetic emissions at the plasma frequency by Type III solar radio bursts in solar wind and coronal plasmas</p>
+    <p class="meta">{{thesis_meta}}</p>
+    <p><a class="btn" href="{{thesis_url}}" rel="noopener">{{thesis_read}}</a></p>
+    <div class="prose">{{thesis_summary_html}}</div>
+
+    <figure class="scheme">
+      <img src="{{root}}assets/media/typeIII_source.webp" width="2384" height="1095" loading="lazy" alt="{{fig_alt}}">
+      <figcaption>{{fig_caption}}</figcaption>
+    </figure>
+
+    <h3 class="sub-h">{{results_h}}</h3>
+    <div class="results">{{results_html}}</div>
+
+    <div class="thesis-foot">
+      <figure class="defense">
+        <img src="{{root}}assets/media/defense.jpg" width="1800" height="991" loading="lazy" alt="{{photo_caption}}">
+        <figcaption>{{photo_caption}}</figcaption>
+      </figure>
+      <div class="thesis-side">
+        <h3 class="sub-h">{{jury_h}}</h3>
+        <dl class="jury">{{jury_html}}</dl>
+        <h3 class="sub-h">{{compute_h}}</h3>
+        <p class="small">{{compute_text}}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="simulations" class="block" aria-labelledby="sims-h">
+  <div class="wrap">
+    <h2 id="sims-h">{{sims_h}}</h2>
+    <p class="intro small-intro">{{sims_intro}}</p>
+
+    <figure class="sim sim-one">
+      <video data-auto muted loop playsinline controls preload="none" poster="{{root}}assets/media/sim_density_wells.jpg" width="1080" height="1080">
+        <source src="{{root}}assets/media/sim_density_wells.mp4" type="video/mp4">
+      </video>
+      <figcaption>
+        <h3>{{v1_h}}</h3>
+        <p>{{v1_text}}</p>
+      </figcaption>
+    </figure>
+
+    <figure class="sim sim-two">
+      <div class="pair">
+        <div>
+          <video data-auto muted loop playsinline controls preload="none" poster="{{root}}assets/media/beam_vdf_homogeneous.jpg" width="960" height="810">
+            <source src="{{root}}assets/media/beam_vdf_homogeneous.mp4" type="video/mp4">
+          </video>
+          <span class="tag">{{v2_hom}}</span>
+        </div>
+        <div>
+          <video data-auto muted loop playsinline controls preload="none" poster="{{root}}assets/media/beam_vdf_inhomogeneous.jpg" width="960" height="810">
+            <source src="{{root}}assets/media/beam_vdf_inhomogeneous.mp4" type="video/mp4">
+          </video>
+          <span class="tag">{{v2_inh}}</span>
+        </div>
+      </div>
+      <figcaption>
+        <h3>{{v2_h}}</h3>
+        <p>{{v2_text}}</p>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="teaching" class="block" aria-labelledby="teaching-h">
+  <div class="wrap two">
+    <div>
+      <h2 id="teaching-h">{{teaching_h}}</h2>
+      <dl class="rows">{{teaching_html}}</dl>
+    </div>
+    <div>
+      <h2>{{honors_h}}</h2>
+      <dl class="rows">{{honors_html}}</dl>
+      <h2 class="talks-h">{{talks_h}}</h2>
+      <p class="small">{{talks_summary}}</p>
+      <details class="talks">
+        <summary>{{talks_show}}</summary>
+        {{talks_html}}
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="block" aria-labelledby="about-h">
+  <div class="wrap two">
+    <div>
+      <h2 id="about-h">{{about_h}}</h2>
+      <div class="prose">{{about_html}}</div>
+    </div>
+    <div>
+      <h2>{{path_h}}</h2>
+      <ol class="path">{{path_html}}</ol>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="block contact" aria-labelledby="contact-h">
+  <div class="wrap">
+    <h2 id="contact-h">{{contact_h}}</h2>
+    <p class="small">{{contact_text}}</p>
+    <p class="mail"><a href="mailto:{{email}}">{{email}}</a></p>
+    <p class="small">{{contact_addr}}</p>
+    {{profiles}}
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>© 2026 Francisco Javier Polanco-Rodríguez. {{footer}}</p>
+  </div>
+</footer>
+
+<dialog id="pubs" class="sheet" aria-labelledby="pubs-h">
+  <div class="sheet-in">
+    <div class="sheet-head">
+      <h2 id="pubs-h">{{pubs_h}}</h2>
+      <button class="close" type="button" data-close aria-label="{{close}}">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+      </button>
+    </div>
+    <p class="small">{{pubs_intro}}</p>
+    <div class="filters" role="group" aria-label="{{pubs_h}}">
+      <button type="button" data-filter="all" aria-pressed="true">{{filter_all}}</button>
+      <button type="button" data-filter="peer" aria-pressed="false">{{filter_peer}}</button>
+      <button type="button" data-filter="first" aria-pressed="false">{{filter_first}}</button>
+      <button type="button" data-filter="progress" aria-pressed="false">{{filter_progress}}</button>
+    </div>
+    <ol class="pubs">{{pubs_html}}</ol>
+    {{profiles}}
+  </div>
+</dialog>
+
+<script type="application/json" id="i18n">{{js_strings}}</script>
+<script src="{{root}}assets/js/site.js" defer></script>
+</body>
+</html>
