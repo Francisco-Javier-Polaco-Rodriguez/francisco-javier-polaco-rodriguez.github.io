@@ -40,11 +40,25 @@
       <nav class="langs" aria-label="Language">{{langs}}</nav>
     </div>
   </div>
+  <div class="progress" aria-hidden="true"></div>
 </header>
 
 <main id="main">
 
 <section class="hero" aria-labelledby="name">
+  <div class="wrap hero-text">
+    <p class="role">{{hero_role}}</p>
+    <h1 id="name">Francisco Javier <span>Polanco-Rodríguez</span></h1>
+    <p class="lead">{{hero_lead}}</p>
+    <p class="sub">{{hero_sub}}</p>
+    <div class="actions">
+      <a class="btn primary" href="#publications" data-open-pubs>{{btn_pubs}} <span class="count">{{pub_count}}</span></a>
+      <a class="btn" href="{{root}}assets/cv/CV_Polanco-Rodriguez.pdf" download>{{btn_cv}}</a>
+      <a class="btn quiet" href="#contact">{{btn_contact}}</a>
+    </div>
+    {{profiles}}
+  </div>
+
   <figure class="burst">
     <canvas id="burst" role="img" aria-label="{{anim_label}}"></canvas>
     <button class="burst-toggle" type="button" aria-pressed="false" aria-label="{{anim_pause}}">
@@ -61,19 +75,6 @@
       <p>{{anim_caption}}</p>
     </figcaption>
   </figure>
-
-  <div class="wrap hero-text">
-    <p class="role">{{hero_role}}</p>
-    <h1 id="name">Francisco Javier <span>Polanco-Rodríguez</span></h1>
-    <p class="lead">{{hero_lead}}</p>
-    <p class="sub">{{hero_sub}}</p>
-    <div class="actions">
-      <a class="btn primary" href="#publications" data-open-pubs>{{btn_pubs}} <span class="count">{{pub_count}}</span></a>
-      <a class="btn" href="{{root}}assets/cv/CV_Polanco-Rodriguez.pdf" download>{{btn_cv}}</a>
-      <a class="btn quiet" href="#contact">{{btn_contact}}</a>
-    </div>
-    {{profiles}}
-  </div>
 </section>
 
 <section id="research" class="block" aria-labelledby="research-h">
@@ -161,6 +162,15 @@
   </div>
 </section>
 
+<section id="papers" class="block" aria-labelledby="papers-h">
+  <div class="wrap">
+    <h2 id="papers-h">{{sel_h}}</h2>
+    <p class="small">{{pubs_intro}}</p>
+    <ol class="sel">{{selected_html}}</ol>
+    <p><a class="btn" href="#publications" data-open-pubs>{{sel_all}} <span class="count">{{pub_count}}</span></a></p>
+  </div>
+</section>
+
 <section id="teaching" class="block" aria-labelledby="teaching-h">
   <div class="wrap two">
     <div>
@@ -172,6 +182,7 @@
       <dl class="rows">{{honors_html}}</dl>
       <h2 class="talks-h">{{talks_h}}</h2>
       <p class="small">{{talks_summary}}</p>
+      <ol class="tl recent">{{recent_talks_html}}</ol>
       <details class="talks">
         <summary>{{talks_show}}</summary>
         {{talks_html}}

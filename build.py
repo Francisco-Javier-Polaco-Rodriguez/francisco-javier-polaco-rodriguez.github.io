@@ -84,6 +84,26 @@ def pubs_html(t):
     return ''.join(items)
 
 
+def selected_html():
+    items = []
+    for p in C.PUBS:
+        if p['status'] != 'published':
+            continue
+        items.append(
+            '<li><span class="yr">%d</span><span>'
+            '<a class="s-title" lang="en" href="https://doi.org/%s" rel="noopener">%s</a>'
+            '<span class="s-meta">%s · <i>%s</i> %s, %s</span></span></li>' % (
+                p['year'], p['doi'], p['title'], authors_html(p['authors']),
+                esc(p['journal']), p['volume'], p['pages']))
+    return ''.join(items)
+
+
+def recent_talks_html(n=4):
+    return ''.join(
+        '<li><span class="yr">%d</span><span><span class="t-title" lang="en">%s</span><span class="t-venue">%s</span></span></li>' % (
+            y, esc(title), esc(venue)) for y, venue, title, me in [o for o in C.ORAL if o[3]][:n])
+
+
 def ref_label(key):
     p = next(p for p in C.PUBS if p['key'] == key)
     short = {'Astrophys. J. Lett.': 'ApJL', 'Astron. Astrophys.': 'A&amp;A', 'Nat. Astron.': 'Nature Astronomy'}[p['journal']]
@@ -161,6 +181,8 @@ def render(lang):
         honors_html=''.join('<div><dt>%s</dt><dd>%s</dd></div>' % r for r in t['honors']),
         teaching_html=''.join('<div><dt>%s</dt><dd><strong>%s</strong> %s</dd></div>' % r for r in t['teaching']),
         talks_html=talks_html(t),
+        recent_talks_html=recent_talks_html(),
+        selected_html=selected_html(),
         about_html=''.join('<p>%s</p>' % p for p in t['about_text']),
         path_html=''.join('<li><span class="yr">%s</span><span>%s</span></li>' % r for r in t['path']),
         pubs_html=pubs_html(t),

@@ -90,7 +90,7 @@
       const so = at(main, .7), pp = at(main, .57);
       sats = [
         { name: small ? 'SolO' : 'Solar Orbiter', kind: 'solo', s: .7, x: so.x + so.nx * src.ry * .42, y: so.y + so.ny * src.ry * .42 },
-        { name: small ? 'PSP' : 'Parker Solar Probe', kind: 'psp', s: .57, x: pp.x - pp.nx * src.ry * .3, y: pp.y - pp.ny * src.ry * .3 },
+        { name: small ? 'PSP' : 'Parker Solar Probe', kind: 'psp', s: .57, above: true, x: pp.x - pp.nx * src.ry * .3, y: pp.y - pp.ny * src.ry * .3 },
       ];
       reset(cycle);
     }
@@ -184,7 +184,8 @@
         ctx.strokeStyle = rgba(col.beam, (1 - a / 1.4) * .8 * g); ctx.lineWidth = 1.2;
         ctx.beginPath(); ctx.arc(sat.x, sat.y, (8 + a * 22) * k, 0, 6.2832); ctx.stroke();
       }
-      label(sat.name, sat.x, sat.y + 26 * u);
+      // PSP sits above the beam: put its label above so it does not cover the electrons
+      label(sat.name, sat.x, sat.above ? sat.y - 16 * u : sat.y + 26 * u);
     }
 
     // Earth with radio telescopes pointed at the source; they glow when a front arrives.
@@ -410,4 +411,72 @@
     }), { threshold: .35 });
     vids.forEach((v) => io.observe(v));
   }
+  /* ================================================================
+     Scroll interaction: sections unfold as they enter and fold as they
+     leave (both directions), active section in the nav, reading progress.
+     ================================================================ */
+  const RV = [
+    '.block h2', '.block .intro', '.block > .wrap > .small', '.thesis-title', '#thesis .meta',
+    '.block .prose > p', '.spectro figcaption', '.interests > li', '.results > .result',
+    '.thesis-side', '.sim figcaption', '.sel > li', '.rows > div', '.tl.recent > li',
+    '.path > li', '.talks', '.contact .mail', '.contact .profiles', '.sub-h',
+  ];
+  const RV_FIG = ['.spectro img', '.scheme', '.defense', '.sim-one video', '.pair > div'];
+  const main = document.getElementById('main');
+  const bar = document.querySelector('.progress');
+  const links = new Map([...document.querySelectorAll('.nav a[href^="#"]')].map((a) => [a.getAttribute('href').slice(1), a]));
+  const secs = [...links.keys()].map((id) => document.getElementById(id)).filter(Boolean);
+  const els = [];
+  const motion = () => !reduceMQ.matches;
+  if (main) {
+    const tag = (sel, fig) => main.querySelectorAll(sel).forEach((el) => {
+      if (el.closest('.hero') || el.parentElement.closest('.rv')) return;
+      el.classList.add('rv');
+      // stagger siblings of the same kind (grid cells, list rows)
+      const sib = [...el.parentElement.children].filter((c) => c.matches(sel));
+      els.push({ el, fig, i: sib.indexOf(el) % 3 });
+    });
+    RV.forEach((s) => tag(s, false)); RV_FIG.forEach((s) => tag(s, true));
+  }
+  const clamp = (x) => Math.max(0, Math.min(1, x));
+  const ease = (x) => 1 - Math.pow(1 - x, 3);
+  function style(o, r, vh) {
+    const st = o.el.style;
+    // unfold while the top travels through the lowest third of the viewport
+    const a = ease(clamp((vh * (1 - .05 * o.i) - r.top) / (vh * .3)));
+    // fold while the bottom travels through the top fifth, just under the header
+    const b = ease(clamp((vh * .24 - r.bottom) / (vh * .2)));
+    const v = a * (1 - b);
+    if (v > .999 || !motion()) { st.opacity = st.transform = st.clipPath = ''; return; }
+    const y = (1 - a) * (o.fig ? 48 : 34) - b * 28;
+    const sc = o.fig ? .94 + .06 * a - .03 * b : 1 - .02 * b;
+    st.opacity = v.toFixed(3);
+    st.transform = `translate3d(0, ${y.toFixed(1)}px, 0) scale(${sc.toFixed(4)})`;
+    if (o.fig) {
+      const c = (1 - a) * 14, cx = (1 - a) * 5;
+      st.clipPath = c > .05 ? `inset(${c.toFixed(1)}% ${cx.toFixed(1)}% ${c.toFixed(1)}% ${cx.toFixed(1)}% round 16px)` : '';
+    }
+  }
+  let queued = false;
+  function update() {
+    queued = false;
+    const vh = innerHeight;
+    // read everything first, then write, to avoid layout thrashing
+    const rects = els.map((o) => o.el.getBoundingClientRect());
+    const srects = secs.map((s) => s.getBoundingClientRect());
+    els.forEach((o, k) => { const r = rects[k]; if (r.bottom > -vh && r.top < 2 * vh) style(o, r, vh); });
+    if (bar) {
+      const h = document.documentElement.scrollHeight - vh;
+      bar.style.transform = `scaleX(${h > 0 ? clamp(scrollY / h) : 0})`;
+    }
+    // active section: the last one whose top has passed 40% of the viewport
+    let cur = null;
+    srects.forEach((r, k) => { if (r.top < vh * .4 && r.bottom > vh * .4) cur = secs[k].id; });
+    links.forEach((a, id) => (id === cur ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
+  }
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+  addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', queue);
+  reduceMQ.addEventListener('change', queue);
+  update();
 })();

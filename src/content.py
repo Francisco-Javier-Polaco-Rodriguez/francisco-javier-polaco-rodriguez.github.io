@@ -45,12 +45,6 @@ PUBS = [
     dict(key='Krafft2026sub', authors=['Krafft, C.', ME, 'Savoini, P.'], year=2026,
          title=f'Evidence of linear mode conversion of Langmuir/{Z}-mode waves to electromagnetic waves in the solar wind',
          journal='Astrophys. J. Lett.', status='submitted'),
-    dict(key='Polanco2026prep', authors=[ME, 'Krafft, C.', 'Savoini, P.'], year=2026,
-         title='Random density fluctuations at sub-ion scales in the solar wind',
-         journal='Astrophys. J. Lett.', status='prep'),
-    dict(key='Krafft2026prep', authors=['Krafft, C.', ME, 'Savoini, P.'], year=2026,
-         title=f'Electromagnetic decay of Langmuir/{Z}-mode waves in solar wind plasmas',
-         journal='Astrophys. J. Lett.', status='prep'),
     dict(key='Krasnoselskikh2026', authors=['Krasnoselskikh, V.', 'Krafft, C.', 'et al. (15 authors)'], year=2026,
          title='Beam–plasma interactions and the generation of Type III radio bursts',
          journal='Space Sci. Rev.', status='review'),
@@ -157,7 +151,6 @@ T['en'] = dict(
 
     honors_h='Recognition',
     honors=[
-        ('2026', 'Nominated for the EPS Plasma Physics Division PhD Research Award Nuno Loureiro.'),
         ('2022', 'Excellence scholarship, EUR PlasmaScience (Master 2, ranked 2nd of 20).'),
     ],
 
@@ -194,6 +187,7 @@ T['en'] = dict(
 
     pubs_h='Publications',
     pubs_intro='Six peer-reviewed articles, four as first author, in Nature Astronomy, The Astrophysical Journal Letters and Astronomy & Astrophysics.',
+    sel_h='Selected publications', sel_all='All publications',
     filter_all='All', filter_peer='Peer-reviewed', filter_first='First author', filter_progress='In progress',
     copy_bib='Copy BibTeX', copied='Copied', close='Close',
     status_submitted='Submitted', status_prep='In preparation', status_review='Review, to be submitted',
@@ -266,7 +260,6 @@ T['fr'] = dict(
 
     honors_h='Distinctions',
     honors=[
-        ('2026', 'Nominé pour le EPS Plasma Physics Division PhD Research Award Nuno Loureiro.'),
         ('2022', 'Bourse d’excellence EUR PlasmaScience (Master 2, classé 2e sur 20).'),
     ],
 
@@ -303,6 +296,7 @@ T['fr'] = dict(
 
     pubs_h='Publications',
     pubs_intro='Six articles dans des revues à comité de lecture, dont quatre en premier auteur, dans Nature Astronomy, The Astrophysical Journal Letters et Astronomy & Astrophysics.',
+    sel_h='Publications choisies', sel_all='Toutes les publications',
     filter_all='Toutes', filter_peer='Publiées', filter_first='Premier auteur', filter_progress='En cours',
     copy_bib='Copier le BibTeX', copied='Copié', close='Fermer',
     status_submitted='Soumis', status_prep='En préparation', status_review='Revue, à soumettre',
@@ -375,7 +369,6 @@ T['es'] = dict(
 
     honors_h='Reconocimientos',
     honors=[
-        ('2026', 'Nominado al EPS Plasma Physics Division PhD Research Award Nuno Loureiro.'),
         ('2022', 'Beca de excelencia EUR PlasmaScience (Máster 2, segundo de 20).'),
     ],
 
@@ -412,6 +405,7 @@ T['es'] = dict(
 
     pubs_h='Publicaciones',
     pubs_intro='Seis artículos en revistas con revisión por pares, cuatro como primer autor, en Nature Astronomy, The Astrophysical Journal Letters y Astronomy & Astrophysics.',
+    sel_h='Publicaciones destacadas', sel_all='Todas las publicaciones',
     filter_all='Todas', filter_peer='Publicadas', filter_first='Primer autor', filter_progress='En curso',
     copy_bib='Copiar BibTeX', copied='Copiado', close='Cerrar',
     status_submitted='Enviado', status_prep='En preparación', status_review='Revisión, por enviar',
