@@ -36,6 +36,7 @@
       <a href="#research">Research</a>
       <a href="#thesis">Thesis</a>
       <a href="#simulations">Simulations</a>
+      <a href="#observations">Observations</a>
       <a href="#teaching">Teaching</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
@@ -54,7 +55,7 @@
   <div class="wrap hero-text">
     <p class="role">Plasma physicist<br>Postdoctoral researcher (ATER), Laboratoire de Physique des Plasmas, École Polytechnique</p>
     <h1 id="name">Francisco Javier <span>Polanco-Rodríguez</span></h1>
-    <p class="lead">I study how electron beams from solar flares turn plasma waves into radio emission.</p>
+    <p class="lead">I study how electron beams from solar flares generate plasma waves, and how these are converted into radio emission.</p>
     <p class="sub">Type III solar radio bursts, Langmuir wave turbulence and plasma emission, approached with large-scale kinetic simulations, theory and Solar Orbiter observations.</p>
     <div class="actions">
       <a class="btn primary" href="#publications" data-open-pubs>Publications <span class="count">8</span></a>
@@ -64,7 +65,8 @@
     <ul class="profiles"><li><a href="https://orcid.org/0009-0005-2951-697X" rel="noopener">ORCID</a></li><li><a href="https://scholar.google.com/citations?user=uOhYwswAAAAJ&amp;hl=en" rel="noopener">Google Scholar</a></li><li><a href="https://www.researchgate.net/profile/Francisco-Polanco-Rodriguez" rel="noopener">ResearchGate</a></li><li><a href="https://theses.hal.science/tel-05825580" rel="noopener">HAL</a></li></ul>
   </div>
 
-  <figure class="burst">
+  <figure class="burst" aria-labelledby="burst-title">
+    <p class="wrap burst-title" id="burst-title">Type III solar radio bursts</p>
     <canvas id="burst" role="img" aria-label="Animation of a Type III radio burst"></canvas>
     <button class="burst-toggle" type="button" aria-pressed="false" aria-label="Pause animation">
       <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="2.6" height="10" rx="1"/><rect x="9.4" y="3" width="2.6" height="10" rx="1"/></svg>
@@ -76,8 +78,9 @@
         <li style="--c: var(--beam)"><span>Electron beam</span></li>
         <li style="--c: var(--langmuir)"><span>Langmuir waves</span></li>
         <li style="--c: var(--radio)"><span>Radio waves</span></li>
+        <li class="fl"><span>Random density fluctuations</span></li>
       </ul>
-      <p>A flare accelerates an electron beam along the magnetic field. In the turbulent solar wind the beam drives Langmuir waves, which convert part of their energy into radio emission at the plasma frequency <i>ω</i><sub>p</sub>. Radio telescopes and spacecraft detect it from afar, while probes such as Solar Orbiter and Parker Solar Probe cross the radio source and measure its waves in situ.</p>
+      <p>A flare accelerates an electron beam, which propagates along the open magnetic field lines. All along its path through the turbulent solar wind, the beam drives Langmuir waves. A chain of linear and nonlinear processes then converts part of their energy into radio emission at the plasma frequency <i>ω</i><sub>p</sub>. Despite seventy years of research, this chain is still not fully understood. Radio telescopes on Earth record this emission from afar. Spacecraft such as Solar Orbiter and Parker Solar Probe can, in addition, fly through the radio sources and measure their waves in situ.</p>
     </figcaption>
   </figure>
 </section>
@@ -94,7 +97,7 @@
         <p class="credit">Solar Orbiter/RPW data, adapted from <a href="https://parker.gsfc.nasa.gov/crocs.html" rel="noopener">CROCS</a> (NASA GSFC).</p>
       </figcaption>
     </figure>
-    <ul class="interests"><li><h3>Plasma emission and solar radio bursts</h3><p>Electromagnetic radiation at <i>ω</i><sub>p</sub> and 2<i>ω</i><sub>p</sub> during Type III bursts; mode conversion; radiation efficiency of <span class="m">𝒪</span>, <span class="m">𝒳</span> and <span class="m">𝒵</span> modes.</p></li><li><h3>Langmuir wave physics</h3><p>Nonlinear wave–wave interactions, and linear transformations on random density fluctuations: scattering, refraction, reflection, trapping.</p></li><li><h3>Kinetic turbulence in the solar wind</h3><p>Density fluctuations and intermittency at kinetic scales; wave–particle interactions and beam relaxation.</p></li><li><h3>High-performance PIC simulations</h3><p>Multidimensional particle-in-cell simulations on national supercomputers, with virtual satellites that record fields as a spacecraft would.</p></li><li><h3>In situ space data</h3><p>High-cadence waveforms from Solar Orbiter (RPW/TDS) and Parker Solar Probe, analysed with the same diagnostics as the simulations.</p></li><li><h3>Machine learning for space plasma data</h3><p>Automatic detection and classification of wave events in large spacecraft datasets.</p></li><li><h3>Beyond the Sun</h3><p>The same wave–particle and wave–wave processes in astrophysical radio sources, planetary magnetospheres, and laboratory and laser-produced plasmas.</p></li></ul>
+    <ul class="interests"><li><h3>Plasma emission and solar radio bursts</h3><p>Electromagnetic radiation at <i>ω</i><sub>p</sub> and 2<i>ω</i><sub>p</sub> during Type III bursts; mode conversion; radiation efficiency of <span class="m">𝒪</span>, <span class="m">𝒳</span> and <span class="m">𝒵</span> modes.</p></li><li><h3>Langmuir wave turbulence</h3><p>How beam-driven Langmuir turbulence evolves: energy transfer to small wavenumbers through cascades of nonlinear wave–wave decays, and linear transformations on random density fluctuations (scattering, refraction, reflection, trapping).</p></li><li><h3>Kinetic turbulence in the solar wind</h3><p>Density fluctuations and intermittency at kinetic scales; wave–particle interactions and beam relaxation.</p></li><li><h3>High-performance PIC simulations</h3><p>Multidimensional particle-in-cell simulations on national supercomputers. I also implemented several analysis techniques, among them a new virtual satellite method that samples the simulated fields as a spacecraft would.</p></li><li><h3>In situ space data</h3><p>High-cadence waveforms from Solar Orbiter (RPW/TDS) and Parker Solar Probe, analysed with the same diagnostics as the simulations.</p></li><li><h3>Machine learning for space plasma data</h3><p>Automatic detection and classification of wave events in large spacecraft datasets.</p></li><li><h3>Beyond the Sun</h3><p>The same wave–particle and wave–wave processes in astrophysical radio sources, planetary magnetospheres, and laboratory and laser-produced plasmas.</p></li></ul>
   </div>
 </section>
 
@@ -167,6 +170,38 @@
   </div>
 </section>
 
+<section id="observations" class="block obs" aria-labelledby="obs-h">
+  <div class="wrap">
+    <h2 id="obs-h">Solar wind observations</h2>
+    <p class="intro small-intro">A radio emission process first found in the simulations, then seen in space.</p>
+
+    <div class="obs-step">
+      <div class="obs-text">
+        <p class="kicker"><span>1</span>Theory and simulations</p>
+        <h3>The decay cascade ends in the <span class="m">𝒵</span> mode</h3>
+        <p>Beam-driven <span class="m">ℒ𝒵</span> waves decay again and again into <span class="m">ℒ𝒵</span> waves and ion acoustic waves <span class="m">𝒮</span>, moving to ever smaller wavenumbers. In a magnetized plasma, the last step produces electromagnetic <span class="m">𝒵</span>-mode waves.</p>
+        <p class="refs"><a href="https://doi.org/10.3847/2041-8213/adba64" rel="noopener">ApJL 2025</a></p>
+      </div>
+      <figure class="obs-fig">
+        <img src="assets/media/obs_cascade.webp" width="1800" height="546" loading="lazy" alt="Diagram of the electrostatic decay cascade of Langmuir/Z-mode waves ending in Z-mode waves, on the dispersion curve">
+      </figure>
+    </div>
+
+    <div class="obs-step">
+      <div class="obs-text">
+        <p class="kicker"><span>2</span>Solar Orbiter</p>
+        <h3>Observed in the solar wind for the first time</h3>
+        <p>Electric and magnetic spectra of a Solar Orbiter waveform match those recorded by a virtual satellite in the simulation. The magnetic signal near the plasma frequency comes from the electromagnetic <span class="m">𝒵</span>-mode waves produced by the decay.</p>
+        <p class="refs"><a href="https://doi.org/10.3847/2041-8213/ae626f" rel="noopener">ApJL 2026</a></p>
+      </div>
+      <figure class="obs-pair">
+        <div><img src="assets/media/obs_solo.webp" width="1400" height="827" loading="lazy" alt="Solar Orbiter waveform with electric and magnetic field spectrograms near the plasma frequency"><span class="tag">Solar Orbiter (RPW/TDS), beam speed ≈ 0.21<i>c</i></span></div>
+        <div><img src="assets/media/obs_sim.webp" width="1400" height="804" loading="lazy" alt="Simulated waveform with electric and magnetic field spectrograms near the plasma frequency"><span class="tag">PIC simulation, virtual satellite, beam speed 0.25<i>c</i></span></div>
+      </figure>
+    </div>
+  </div>
+</section>
+
 <section id="papers" class="block" aria-labelledby="papers-h">
   <div class="wrap">
     <h2 id="papers-h">Selected publications</h2>
@@ -200,7 +235,7 @@
   <div class="wrap two">
     <div>
       <h2 id="about-h">About</h2>
-      <div class="prose"><p>I grew up in Spain, studied physics at the University of Seville, then came to France for the Master in Plasma Physics and Fusion at Institut Polytechnique de Paris, which led to a PhD at the Laboratoire de Physique des Plasmas.</p><p>Away from the simulations I photograph the night sky. I have played clarinet and saxophone in many bands and ensembles, and also play flute and guitar. I speak Spanish, French and English, and I am curious about languages of every family, Indo-European, Semitic or Asian. I enjoy explaining science to the public. In short, I am an enthusiast of human knowledge in all its forms.</p></div>
+      <div class="prose"><p>I was born in <button type="button" class="inl" aria-expanded="false" aria-controls="drawer-chiclana">Chiclana de la Frontera</button>, on the Atlantic coast of southern Spain, and studied physics at the University of Seville. I then came to France for the Master in Plasma Physics and Fusion at Institut Polytechnique de Paris, which led to a PhD at the Laboratoire de Physique des Plasmas.</p><div class="drawer" id="drawer-chiclana"><div class="drawer-in"><figure class="shot"><img src="assets/media/chiclana_barrosa.webp" width="2000" height="878" loading="lazy" alt="Sunset over the Atlantic at La Barrosa beach, Chiclana de la Frontera."><figcaption>Sunset over the Atlantic at La Barrosa beach, Chiclana de la Frontera.</figcaption></figure></div></div><p>Away from the simulations I <button type="button" class="inl" aria-expanded="false" aria-controls="drawer-astro">photograph the sky</button>, from the Sun and the Moon to nebulae and star clusters. I have played clarinet and saxophone in many bands and ensembles, and also play flute and guitar. I speak Spanish, French and English, and I am curious about languages of every family, Indo-European, Semitic or Asian. I enjoy explaining science to the public. In short, I am an enthusiast of human knowledge in all its forms.</p><div class="drawer" id="drawer-astro"><div class="drawer-in"><ul class="gallery"><li class="wide"><figure><button type="button" class="zoom" data-full="assets/media/astro_andromeda.webp" data-cap="The Andromeda Galaxy (M31) with its satellite galaxies M32 and M110."><img src="assets/media/astro_andromeda.webp" width="1672" height="876" loading="lazy" alt="The Andromeda Galaxy (M31) with its satellite galaxies M32 and M110."></button><figcaption>The Andromeda Galaxy (M31) with its satellite galaxies M32 and M110.</figcaption></figure></li><li><figure><button type="button" class="zoom" data-full="assets/media/astro_pleiades.webp" data-cap="The Pleiades (M45) and the blue reflection nebula around their brightest stars."><img src="assets/media/astro_pleiades.webp" width="655" height="1005" loading="lazy" alt="The Pleiades (M45) and the blue reflection nebula around their brightest stars."></button><figcaption>The Pleiades (M45) and the blue reflection nebula around their brightest stars.</figcaption></figure></li><li><figure><button type="button" class="zoom" data-full="assets/media/astro_orion.webp" data-cap="The Orion Nebula (M42), with the Running Man Nebula (NGC 1977) above it."><img src="assets/media/astro_orion.webp" width="1354" height="1600" loading="lazy" alt="The Orion Nebula (M42), with the Running Man Nebula (NGC 1977) above it."></button><figcaption>The Orion Nebula (M42), with the Running Man Nebula (NGC 1977) above it.</figcaption></figure></li><li><figure><button type="button" class="zoom" data-full="assets/media/astro_moon.webp" data-cap="The Moon, 25 September 2026."><img src="assets/media/astro_moon.webp" width="1200" height="1200" loading="lazy" alt="The Moon, 25 September 2026."></button><figcaption>The Moon, 25 September 2026.</figcaption></figure></li><li><figure><button type="button" class="zoom" data-full="assets/media/astro_sun.webp" data-cap="The Sun behind tree branches, 25 September 2026."><img src="assets/media/astro_sun.webp" width="1200" height="1200" loading="lazy" alt="The Sun behind tree branches, 25 September 2026."></button><figcaption>The Sun behind tree branches, 25 September 2026.</figcaption></figure></li><li><figure><button type="button" class="zoom" data-full="assets/media/astro_orion2.webp" data-cap="The Orion Nebula (M42), another take."><img src="assets/media/astro_orion2.webp" width="860" height="924" loading="lazy" alt="The Orion Nebula (M42), another take."></button><figcaption>The Orion Nebula (M42), another take.</figcaption></figure></li></ul></div></div></div>
     </div>
     <div>
       <h2>Path</h2>
@@ -297,6 +332,14 @@
 }">Copy BibTeX</button></p></li><li data-status="submitted" data-first="false"><p class="p-title" lang="en">Evidence of linear mode conversion of Langmuir/<span class="m">𝒵</span>-mode waves to electromagnetic waves in the solar wind</p><p class="p-auth">Krafft, C., <strong class="me">Polanco-Rodríguez, F. J.</strong>, Savoini, P.</p><p class="p-venue"><i>Astrophys. J. Lett.</i> (2026) <span class="status">Submitted</span></p></li><li data-status="review" data-first="false"><p class="p-title" lang="en">Beam–plasma interactions and the generation of Type III radio bursts</p><p class="p-auth">Krasnoselskikh, V., Krafft, C., et al. (15 authors)</p><p class="p-venue"><i>Space Sci. Rev.</i> (2026) <span class="status">Review, to be submitted</span></p></li></ol>
     <ul class="profiles"><li><a href="https://orcid.org/0009-0005-2951-697X" rel="noopener">ORCID</a></li><li><a href="https://scholar.google.com/citations?user=uOhYwswAAAAJ&amp;hl=en" rel="noopener">Google Scholar</a></li><li><a href="https://www.researchgate.net/profile/Francisco-Polanco-Rodriguez" rel="noopener">ResearchGate</a></li><li><a href="https://theses.hal.science/tel-05825580" rel="noopener">HAL</a></li></ul>
   </div>
+</dialog>
+
+<dialog id="lightbox" class="lightbox" aria-label="About">
+  <button class="close" type="button" data-close aria-label="Close">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+  </button>
+  <img alt="">
+  <p></p>
 </dialog>
 
 <script type="application/json" id="i18n">{"copied": "Copied", "copy_bib": "Copy BibTeX", "anim_pause": "Pause animation", "anim_play": "Play animation", "earth": "Earth"}</script>

@@ -1,23 +1,26 @@
 (() => {
   'use strict';
+  document.documentElement.classList.add('js');
   const S = JSON.parse(document.getElementById('i18n').textContent);
   const reduceMQ = matchMedia('(prefers-reduced-motion: reduce)');
   const darkMQ = matchMedia('(prefers-color-scheme: dark)');
 
   /* ================================================================
      Type III burst animation.
-     One cycle: flare -> beam along B0 -> Langmuir packets in the
-     turbulent region -> radio fronts from the source.
+     One cycle: flare -> beam along the open field line -> Langmuir packets
+     and radio fronts all along the beam path. Density fluctuations fill
+     the whole solar wind and stay fixed from one cycle to the next.
      ================================================================ */
   const cv = document.getElementById('burst');
   if (cv) {
     const ctx = cv.getContext('2d');
     const btn = document.querySelector('.burst-toggle');
-    const T = 16;            // cycle length [s]
-    const STATIC_T = 11.5;   // frame shown when motion is reduced
+    const T = 17;            // cycle length [s]
+    const STATIC_T = 9.5;    // frame shown when motion is reduced
     let W = 0, H = 0, k = 1; // css size, scale factor vs 1200px reference
     let col = {};
-    let lines = [], main = null, src = null, earth = null, sats = [];
+    let lines = [], main = null, src = null, earth = null, sats = [], wells = [];
+    const fluct = document.createElement('canvas'), fctx = fluct.getContext('2d');
     let st = null, t = 0, cycle = 0;
     let playing = !reduceMQ.matches, onScreen = true, last = 0, raf = 0;
 
@@ -92,15 +95,30 @@
         { name: small ? 'SolO' : 'Solar Orbiter', kind: 'solo', s: .7, x: so.x + so.nx * src.ry * .42, y: so.y + so.ny * src.ry * .42 },
         { name: small ? 'PSP' : 'Parker Solar Probe', kind: 'psp', s: .57, above: true, x: pp.x - pp.nx * src.ry * .3, y: pp.y - pp.ny * src.ry * .3 },
       ];
+      drawFluct(dpr);
       reset(cycle);
     }
 
-    const inSrc = (x, y, f = 1) => {
-      const ca = Math.cos(-src.ang), sa = Math.sin(-src.ang);
-      const dx = x - src.x, dy = y - src.y;
-      const u = dx * ca - dy * sa, v = dx * sa + dy * ca;
-      return (u * u) / (src.rx * src.rx * f * f) + (v * v) / (src.ry * src.ry * f * f);
-    };
+    // Density fluctuations over the whole solar wind, fixed seed, rendered once per layout.
+    // Excesses violet, depletions (wells) blue-grey; Langmuir packets favour the wells.
+    function drawFluct(dpr) {
+      fluct.width = cv.width; fluct.height = cv.height;
+      fctx.setTransform(dpr, 0, 0, dpr, 0, 0); fctx.clearRect(0, 0, W, H);
+      const R = rng(4242), n = Math.round(W * H / (W < 640 ? 2600 : 3600));
+      const { x: sx, y: sy, R: sr } = src.sun;
+      wells = [];
+      for (let i = 0; i < n; i++) {
+        const x = R() * W, y = R() * H, r = (16 + R() * 40) * k;
+        if (Math.hypot(x - sx, y - sy) < sr * 1.15) continue;
+        const sign = R() < .5 ? 1 : -1, a = .045 + R() * .06;
+        if (sign < 0) wells.push({ x, y, r });
+        const c0 = sign > 0 ? col.z : col['ink-2'];
+        const gr = fctx.createRadialGradient(x, y, 0, x, y, r);
+        gr.addColorStop(0, rgba(c0, a * (col.dark ? 1.8 : 1))); gr.addColorStop(1, rgba(c0, 0));
+        fctx.fillStyle = gr; fctx.beginPath(); fctx.arc(x, y, r, 0, 6.2832); fctx.fill();
+      }
+    }
+    const nearWell = (x, y) => wells.some((w) => Math.hypot(w.x - x, w.y - y) < w.r * .8);
 
     // ---------- per-cycle state (seeded so every cycle differs but is reproducible)
     function reset(n) {
@@ -109,39 +127,33 @@
       const beam = Array.from({ length: nb }, () => ({
         t0: .6 + Math.abs(gauss(R)) * .9, v: .072 + R() * .05, off: gauss(R),
       }));
+      // Langmuir packets all along the path, born as the beam passes; kept preferably in density wells
       const lang = [];
-      const nl = W < 640 ? 46 : 80;
+      const nl = W < 640 ? 70 : 120;
       for (let i = 0; i < nl; i++) {
-        const near = R() < .62;
-        const s = near ? .64 + gauss(R) * .07 : .28 + R() * .7;
-        const p = at(main, s);
-        const spread = inSrc(p.x, p.y) < 1.4 ? src.ry * .55 : 12 * k;
-        const off = gauss(R) * spread;
-        const x = p.x + p.nx * off, y = p.y + p.ny * off;
-        // packets inside the source live long enough to cover the radio emission
-        const life = inSrc(x, y) < 1 ? 4.5 + R() * 2.5 : 2 + R() * 1.6;
-        lang.push({ x, y, th: Math.atan2(p.ty, p.tx) + gauss(R) * .5, tb: 1.2 + s / .095 + R() * 1.4, life, ph: R() * 6.28 });
+        let x, y, s, p, tries = 0;
+        do {
+          s = .05 + R() * .97; p = at(main, s);
+          const off = gauss(R) * (5 + s * 24) * k;
+          x = p.x + p.nx * off; y = p.y + p.ny * off;
+        } while (!nearWell(x, y) && ++tries < 3);
+        lang.push({ x, y, th: Math.atan2(p.ty, p.tx) + gauss(R) * .5, tb: .9 + s / .105 + R() * 1.2, life: 2.8 + R() * 2.4, ph: R() * 6.28 });
       }
-      const inner = lang.filter((L) => inSrc(L.x, L.y) < .8);
+      // radio fronts emitted from all along the path; wavelength grows outward (lower plasma frequency)
       const fronts = [];
-      const nf = 7;
+      const nf = W < 640 ? 9 : 13;
       for (let i = 0; i < nf; i++) {
-        const z = inner[Math.floor(R() * inner.length)] || { x: src.x, y: src.y };
-        // most fronts head to Earth; the rest leave in other directions
-        const r = R(), toE = Math.atan2(earth.y - z.y, earth.x - z.x);
-        const dir = r < .55 ? toE + gauss(R) * .1 : r < .8 ? -Math.PI / 2 + gauss(R) * .45 : Math.PI * .3 + gauss(R) * .35;
-        const dist = Math.hypot(earth.x - z.x, earth.y - z.y) - earth.R;
-        const tb = 8.8 + i * .6 + R() * .4;
-        fronts.push({ x0: z.x, y0: z.y, tb, dir, trc: r < .55 ? tb + dist / (85 * k) : Infinity });
-      }
-      const blobs = [];
-      for (let i = 0; i < 16; i++) {
-        const s = .3 + R() * .72, p = at(main, s), off = gauss(R) * H * .22;
-        blobs.push({ x: p.x + p.nx * off, y: p.y + p.ny * off, r: (26 + R() * 46) * k, a: .05 + R() * .07, w: R() * 6.28, sign: R() < .5 ? 1 : -1 });
+        const s = .08 + (i + R()) / nf * .9, p = at(main, s);
+        const x0 = p.x + p.nx * gauss(R) * 8 * k, y0 = p.y + p.ny * gauss(R) * 8 * k;
+        const r = R(), toE = Math.atan2(earth.y - y0, earth.x - x0);
+        const dir = r < .5 ? toE + gauss(R) * .12 : -Math.PI / 2 + gauss(R) * .7;
+        const dist = Math.hypot(earth.x - x0, earth.y - y0) - earth.R;
+        const tb = 1.8 + s / .1 + R() * .6;
+        fronts.push({ x0, y0, tb, dir, lam: (7 + s * 14) * k, trc: r < .5 ? tb + dist / (85 * k) : Infinity });
       }
       const stars = [];
       for (let i = 0; i < 70; i++) stars.push({ x: R() * W, y: R() * H * .9, r: .4 + R() * .9, a: .25 + R() * .5, w: R() * 6.28 });
-      st = { beam, lang, fronts, blobs, stars };
+      st = { beam, lang, fronts, stars };
     }
 
     // ---------- drawing
@@ -233,14 +245,7 @@
         ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.2832); ctx.fill();
       }
 
-      // density fluctuations: soft violet (excess) and blue-grey (depletion) patches
-      for (const b of st.blobs) {
-        const x = b.x + Math.sin(t * .25 + b.w) * 6 * k, y = b.y + Math.cos(t * .2 + b.w) * 4 * k;
-        const gr = ctx.createRadialGradient(x, y, 0, x, y, b.r);
-        const c0 = b.sign > 0 ? col.z : col['ink-2'];
-        gr.addColorStop(0, rgba(c0, b.a * (col.dark ? 1.3 : 1))); gr.addColorStop(1, rgba(c0, 0));
-        ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(x, y, b.r, 0, 6.2832); ctx.fill();
-      }
+      ctx.drawImage(fluct, 0, 0, W, H);
 
       // field lines
       ctx.lineWidth = 1;
@@ -253,18 +258,13 @@
       ctx.font = `italic ${Math.round(14 * Math.max(.85, k))}px Newsreader, Georgia, serif`;
       ctx.fillText('B₀', lb.x + lb.nx * 14 - 6, lb.y + lb.ny * 14);
 
-      // radio source region
-      const sa = smooth(4.2, 6.5, t) * g;
-      if (sa > 0) {
-        ctx.save(); ctx.translate(src.x, src.y); ctx.rotate(src.ang); ctx.scale(src.rx, src.ry);
-        const gr = ctx.createRadialGradient(0, 0, 0, 0, 0, 1);
-        gr.addColorStop(0, rgba(col.z, .13 * sa)); gr.addColorStop(1, rgba(col.z, .02 * sa));
-        ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(0, 0, 1, 0, 6.2832); ctx.fill();
-        ctx.restore();
-        ctx.save(); ctx.translate(src.x, src.y); ctx.rotate(src.ang);
-        ctx.setLineDash([5, 6]); ctx.strokeStyle = rgba(col.z, .55 * sa); ctx.lineWidth = 1.2;
-        ctx.beginPath(); ctx.ellipse(0, 0, src.rx, src.ry, 0, 0, 6.2832); ctx.stroke();
-        ctx.restore(); ctx.setLineDash([]);
+      // the radio source travels with the beam: a soft violet halo around the bulk of the electrons
+      const sb = (t - 1.3) * .097;
+      if (sb > .03 && sb < 1.05) {
+        const p = at(main, sb), rr = (40 + sb * 90) * k, a = Math.min(1, sb / .1) * Math.min(1, (1.05 - sb) / .1) * g;
+        const gr = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, rr);
+        gr.addColorStop(0, rgba(col.z, .16 * a)); gr.addColorStop(1, rgba(col.z, 0));
+        ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(p.x, p.y, rr, 0, 6.2832); ctx.fill();
       }
 
       drawEarth(g);
@@ -315,7 +315,7 @@
       for (const f of st.fronts) {
         const age = t - f.tb; if (age < 0) continue;
         for (let j = 0; j < 3; j++) {
-          const r = age * 85 * k - j * 10 * k; if (r <= 4 || r > rmax) continue;
+          const r = age * 85 * k - j * f.lam; if (r <= 4 || r > rmax) continue;
           const a = (1 - r / rmax) * g * (1 - j * .25);
           ctx.strokeStyle = rgba(col.radio, .9 * a); ctx.lineWidth = 1.6;
           ctx.beginPath(); ctx.arc(f.x0, f.y0, r, f.dir - .42, f.dir + .42); ctx.stroke();
@@ -350,7 +350,7 @@
     new ResizeObserver(() => { layout(); draw(); }).observe(cv);
     new IntersectionObserver((e) => { onScreen = e[0].isIntersecting; kick(); }).observe(cv);
     document.addEventListener('visibilitychange', () => { onScreen = !document.hidden; kick(); });
-    darkMQ.addEventListener('change', () => { readColors(); layout(); draw(); });
+    darkMQ.addEventListener('change', () => { readColors(); layout(); draw(); });  // layout redraws the fluctuations
     reduceMQ.addEventListener('change', () => { if (reduceMQ.matches) { setPlaying(false); showStatic(); } });
     document.fonts && document.fonts.ready.then(draw);
   }
@@ -401,6 +401,29 @@
   }
 
   /* ================================================================
+     About: inline drawers (a word in the text opens a panel below it)
+     and a lightbox for the photos.
+     ================================================================ */
+  document.querySelectorAll('.inl').forEach((b) => {
+    const d = document.getElementById(b.getAttribute('aria-controls'));
+    if (!d) return;
+    b.addEventListener('click', () => {
+      const open = b.getAttribute('aria-expanded') !== 'true';
+      b.setAttribute('aria-expanded', String(open));
+      d.classList.toggle('open', open);
+    });
+  });
+  const lb = document.getElementById('lightbox');
+  if (lb) {
+    const img = lb.querySelector('img'), cap = lb.querySelector('p');
+    document.querySelectorAll('.zoom').forEach((z) => z.addEventListener('click', () => {
+      img.src = z.dataset.full; img.alt = z.dataset.cap; cap.textContent = z.dataset.cap;
+      lb.showModal();
+    }));
+    lb.addEventListener('click', () => lb.close());
+  }
+
+  /* ================================================================
      Simulation videos: play only while on screen.
      ================================================================ */
   const vids = document.querySelectorAll('video[data-auto]');
@@ -419,9 +442,9 @@
     '.block h2', '.block .intro', '.block > .wrap > .small', '.thesis-title', '#thesis .meta',
     '.block .prose > p', '.spectro figcaption', '.interests > li', '.results > .result',
     '.thesis-side', '.sim figcaption', '.sel > li', '.rows > div', '.tl.recent > li',
-    '.path > li', '.talks', '.contact .mail', '.contact .profiles', '.sub-h',
+    '.path > li', '.talks', '.contact .mail', '.contact .profiles', '.sub-h', '.obs-text',
   ];
-  const RV_FIG = ['.spectro img', '.scheme', '.defense', '.sim-one video', '.pair > div'];
+  const RV_FIG = ['.spectro img', '.scheme', '.defense', '.sim-one video', '.pair > div', '.obs-fig', '.obs-pair > div'];
   const main = document.getElementById('main');
   const bar = document.querySelector('.progress');
   const links = new Map([...document.querySelectorAll('.nav a[href^="#"]')].map((a) => [a.getAttribute('href').slice(1), a]));

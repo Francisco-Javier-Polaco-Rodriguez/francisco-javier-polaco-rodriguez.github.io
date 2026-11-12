@@ -31,6 +31,7 @@
       <a href="#research">{{nav_research}}</a>
       <a href="#thesis">{{nav_thesis}}</a>
       <a href="#simulations">{{nav_sims}}</a>
+      <a href="#observations">{{nav_obs}}</a>
       <a href="#teaching">{{nav_teaching}}</a>
       <a href="#about">{{nav_about}}</a>
       <a href="#contact">{{nav_contact}}</a>
@@ -59,7 +60,8 @@
     {{profiles}}
   </div>
 
-  <figure class="burst">
+  <figure class="burst" aria-labelledby="burst-title">
+    <p class="wrap burst-title" id="burst-title">{{anim_title}}</p>
     <canvas id="burst" role="img" aria-label="{{anim_label}}"></canvas>
     <button class="burst-toggle" type="button" aria-pressed="false" aria-label="{{anim_pause}}">
       <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="2.6" height="10" rx="1"/><rect x="9.4" y="3" width="2.6" height="10" rx="1"/></svg>
@@ -71,6 +73,7 @@
         <li style="--c: var(--beam)"><span>{{legend_beam}}</span></li>
         <li style="--c: var(--langmuir)"><span>{{legend_langmuir}}</span></li>
         <li style="--c: var(--radio)"><span>{{legend_radio}}</span></li>
+        <li class="fl"><span>{{legend_fluct}}</span></li>
       </ul>
       <p>{{anim_caption}}</p>
     </figcaption>
@@ -162,6 +165,38 @@
   </div>
 </section>
 
+<section id="observations" class="block obs" aria-labelledby="obs-h">
+  <div class="wrap">
+    <h2 id="obs-h">{{obs_h}}</h2>
+    <p class="intro small-intro">{{obs_intro}}</p>
+
+    <div class="obs-step">
+      <div class="obs-text">
+        <p class="kicker"><span>1</span>{{obs1_k}}</p>
+        <h3>{{obs1_h}}</h3>
+        <p>{{obs1_text}}</p>
+        <p class="refs">{{obs1_ref}}</p>
+      </div>
+      <figure class="obs-fig">
+        <img src="{{root}}assets/media/obs_cascade.webp" width="1800" height="546" loading="lazy" alt="{{obs1_alt}}">
+      </figure>
+    </div>
+
+    <div class="obs-step">
+      <div class="obs-text">
+        <p class="kicker"><span>2</span>{{obs2_k}}</p>
+        <h3>{{obs2_h}}</h3>
+        <p>{{obs2_text}}</p>
+        <p class="refs">{{obs2_ref}}</p>
+      </div>
+      <figure class="obs-pair">
+        <div><img src="{{root}}assets/media/obs_solo.webp" width="1400" height="827" loading="lazy" alt="{{obs_solo_alt}}"><span class="tag">{{obs_solo}}</span></div>
+        <div><img src="{{root}}assets/media/obs_sim.webp" width="1400" height="804" loading="lazy" alt="{{obs_sim_alt}}"><span class="tag">{{obs_sim}}</span></div>
+      </figure>
+    </div>
+  </div>
+</section>
+
 <section id="papers" class="block" aria-labelledby="papers-h">
   <div class="wrap">
     <h2 id="papers-h">{{sel_h}}</h2>
@@ -240,6 +275,14 @@
     <ol class="pubs">{{pubs_html}}</ol>
     {{profiles}}
   </div>
+</dialog>
+
+<dialog id="lightbox" class="lightbox" aria-label="{{about_h}}">
+  <button class="close" type="button" data-close aria-label="{{close}}">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+  </button>
+  <img alt="">
+  <p></p>
 </dialog>
 
 <script type="application/json" id="i18n">{{js_strings}}</script>

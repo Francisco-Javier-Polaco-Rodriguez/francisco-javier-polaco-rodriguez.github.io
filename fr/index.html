@@ -36,6 +36,7 @@
       <a href="#research">Recherche</a>
       <a href="#thesis">Thèse</a>
       <a href="#simulations">Simulations</a>
+      <a href="#observations">Observations</a>
       <a href="#teaching">Enseignement</a>
       <a href="#about">À propos</a>
       <a href="#contact">Contact</a>
@@ -54,7 +55,7 @@
   <div class="wrap hero-text">
     <p class="role">Physicien des plasmas<br>Chercheur postdoctoral (ATER), Laboratoire de Physique des Plasmas, École Polytechnique</p>
     <h1 id="name">Francisco Javier <span>Polanco-Rodríguez</span></h1>
-    <p class="lead">J’étudie comment les faisceaux d’électrons des éruptions solaires transforment les ondes plasma en émission radio.</p>
+    <p class="lead">J’étudie comment les faisceaux d’électrons des éruptions solaires génèrent des ondes plasma, et comment celles-ci se convertissent en émission radio.</p>
     <p class="sub">Sursauts radio de type III, turbulence d’ondes de Langmuir et émission plasma, abordés par des simulations cinétiques à grande échelle, la théorie et les observations de Solar Orbiter.</p>
     <div class="actions">
       <a class="btn primary" href="#publications" data-open-pubs>Publications <span class="count">8</span></a>
@@ -64,7 +65,8 @@
     <ul class="profiles"><li><a href="https://orcid.org/0009-0005-2951-697X" rel="noopener">ORCID</a></li><li><a href="https://scholar.google.com/citations?user=uOhYwswAAAAJ&amp;hl=en" rel="noopener">Google Scholar</a></li><li><a href="https://www.researchgate.net/profile/Francisco-Polanco-Rodriguez" rel="noopener">ResearchGate</a></li><li><a href="https://theses.hal.science/tel-05825580" rel="noopener">HAL</a></li></ul>
   </div>
 
-  <figure class="burst">
+  <figure class="burst" aria-labelledby="burst-title">
+    <p class="wrap burst-title" id="burst-title">Les sursauts radio solaires de type III</p>
     <canvas id="burst" role="img" aria-label="Animation d’un sursaut radio de type III"></canvas>
     <button class="burst-toggle" type="button" aria-pressed="false" aria-label="Mettre l’animation en pause">
       <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="2.6" height="10" rx="1"/><rect x="9.4" y="3" width="2.6" height="10" rx="1"/></svg>
@@ -76,8 +78,9 @@
         <li style="--c: var(--beam)"><span>Faisceau d’électrons</span></li>
         <li style="--c: var(--langmuir)"><span>Ondes de Langmuir</span></li>
         <li style="--c: var(--radio)"><span>Ondes radio</span></li>
+        <li class="fl"><span>Fluctuations aléatoires de densité</span></li>
       </ul>
-      <p>Une éruption accélère un faisceau d’électrons le long du champ magnétique. Dans le vent solaire turbulent, le faisceau excite des ondes de Langmuir, qui convertissent une partie de leur énergie en émission radio à la fréquence plasma <i>ω</i><sub>p</sub>. Radiotélescopes et sondes la détectent à distance, tandis que des sondes comme Solar Orbiter et Parker Solar Probe traversent la source radio et mesurent ses ondes in situ.</p>
+      <p>Une éruption accélère un faisceau d’électrons, qui se propage le long des lignes de champ magnétique ouvertes. Tout au long de son trajet dans le vent solaire turbulent, le faisceau excite des ondes de Langmuir. Une chaîne de processus linéaires et non linéaires convertit ensuite une partie de leur énergie en émission radio à la fréquence plasma <i>ω</i><sub>p</sub>. Malgré soixante-dix ans de recherche, cette chaîne n’est pas encore entièrement comprise. Les radiotélescopes sur Terre enregistrent cette émission à distance. Des sondes comme Solar Orbiter et Parker Solar Probe peuvent en outre traverser les sources radio et mesurer leurs ondes in situ.</p>
     </figcaption>
   </figure>
 </section>
@@ -94,7 +97,7 @@
         <p class="credit">Données Solar Orbiter/RPW, adapté de <a href="https://parker.gsfc.nasa.gov/crocs.html" rel="noopener">CROCS</a> (NASA GSFC).</p>
       </figcaption>
     </figure>
-    <ul class="interests"><li><h3>Émission plasma et sursauts radio solaires</h3><p>Rayonnement électromagnétique à <i>ω</i><sub>p</sub> et 2<i>ω</i><sub>p</sub> lors des sursauts de type III ; conversion de modes ; efficacité de rayonnement des modes <span class="m">𝒪</span>, <span class="m">𝒳</span> et <span class="m">𝒵</span>.</p></li><li><h3>Physique des ondes de Langmuir</h3><p>Interactions non linéaires onde–onde, et transformations linéaires sur des fluctuations aléatoires de densité : diffusion, réfraction, réflexion, piégeage.</p></li><li><h3>Turbulence cinétique du vent solaire</h3><p>Fluctuations de densité et intermittence aux échelles cinétiques ; interactions onde–particule et relaxation du faisceau.</p></li><li><h3>Simulations PIC haute performance</h3><p>Simulations particle-in-cell multidimensionnelles sur les supercalculateurs nationaux, avec des satellites virtuels qui enregistrent les champs comme le ferait une sonde.</p></li><li><h3>Données spatiales in situ</h3><p>Formes d’onde haute cadence de Solar Orbiter (RPW/TDS) et de Parker Solar Probe, analysées avec les mêmes diagnostics que les simulations.</p></li><li><h3>Apprentissage automatique pour les plasmas spatiaux</h3><p>Détection et classification automatiques d’événements ondulatoires dans de grands jeux de données spatiales.</p></li><li><h3>Au-delà du Soleil</h3><p>Les mêmes processus onde–particule et onde–onde dans les sources radio astrophysiques, les magnétosphères planétaires et les plasmas de laboratoire et laser.</p></li></ul>
+    <ul class="interests"><li><h3>Émission plasma et sursauts radio solaires</h3><p>Rayonnement électromagnétique à <i>ω</i><sub>p</sub> et 2<i>ω</i><sub>p</sub> lors des sursauts de type III ; conversion de modes ; efficacité de rayonnement des modes <span class="m">𝒪</span>, <span class="m">𝒳</span> et <span class="m">𝒵</span>.</p></li><li><h3>Turbulence d’ondes de Langmuir</h3><p>Évolution de la turbulence de Langmuir excitée par le faisceau : transfert d’énergie vers les petits nombres d’onde par des cascades de décroissances non linéaires onde–onde, et transformations linéaires sur des fluctuations aléatoires de densité (diffusion, réfraction, réflexion, piégeage).</p></li><li><h3>Turbulence cinétique du vent solaire</h3><p>Fluctuations de densité et intermittence aux échelles cinétiques ; interactions onde–particule et relaxation du faisceau.</p></li><li><h3>Simulations PIC haute performance</h3><p>Simulations particle-in-cell multidimensionnelles sur les supercalculateurs nationaux. J’ai aussi mis en place plusieurs techniques d’analyse, dont une nouvelle méthode de satellites virtuels qui échantillonnent les champs simulés comme le ferait une sonde.</p></li><li><h3>Données spatiales in situ</h3><p>Formes d’onde haute cadence de Solar Orbiter (RPW/TDS) et de Parker Solar Probe, analysées avec les mêmes diagnostics que les simulations.</p></li><li><h3>Apprentissage automatique pour les plasmas spatiaux</h3><p>Détection et classification automatiques d’événements ondulatoires dans de grands jeux de données spatiales.</p></li><li><h3>Au-delà du Soleil</h3><p>Les mêmes processus onde–particule et onde–onde dans les sources radio astrophysiques, les magnétosphères planétaires et les plasmas de laboratoire et laser.</p></li></ul>
   </div>
 </section>
 
@@ -167,6 +170,38 @@
   </div>
 </section>
 
+<section id="observations" class="block obs" aria-labelledby="obs-h">
+  <div class="wrap">
+    <h2 id="obs-h">Observations dans le vent solaire</h2>
+    <p class="intro small-intro">Un processus d’émission radio découvert d’abord en simulation, puis observé dans l’espace.</p>
+
+    <div class="obs-step">
+      <div class="obs-text">
+        <p class="kicker"><span>1</span>Théorie et simulations</p>
+        <h3>La cascade de décroissance aboutit au mode <span class="m">𝒵</span></h3>
+        <p>Les ondes <span class="m">ℒ𝒵</span> excitées par le faisceau se désintègrent successivement en ondes <span class="m">ℒ𝒵</span> et en ondes acoustiques ioniques <span class="m">𝒮</span>, vers des nombres d’onde de plus en plus petits. Dans un plasma magnétisé, la dernière étape produit des ondes électromagnétiques en mode <span class="m">𝒵</span>.</p>
+        <p class="refs"><a href="https://doi.org/10.3847/2041-8213/adba64" rel="noopener">ApJL 2025</a></p>
+      </div>
+      <figure class="obs-fig">
+        <img src="../assets/media/obs_cascade.webp" width="1800" height="546" loading="lazy" alt="Schéma de la cascade de décroissance électrostatique des ondes Langmuir/mode Z aboutissant au mode Z, sur la courbe de dispersion">
+      </figure>
+    </div>
+
+    <div class="obs-step">
+      <div class="obs-text">
+        <p class="kicker"><span>2</span>Solar Orbiter</p>
+        <h3>Observée pour la première fois dans le vent solaire</h3>
+        <p>Les spectres électrique et magnétique d’une forme d’onde de Solar Orbiter correspondent à ceux enregistrés par un satellite virtuel dans la simulation. Le signal magnétique proche de la fréquence plasma provient des ondes électromagnétiques en mode <span class="m">𝒵</span> produites par la décroissance.</p>
+        <p class="refs"><a href="https://doi.org/10.3847/2041-8213/ae626f" rel="noopener">ApJL 2026</a></p>
+      </div>
+      <figure class="obs-pair">
+        <div><img src="../assets/media/obs_solo.webp" width="1400" height="827" loading="lazy" alt="Forme d’onde de Solar Orbiter avec spectrogrammes des champs électrique et magnétique près de la fréquence plasma"><span class="tag">Solar Orbiter (RPW/TDS), vitesse du faisceau ≈ 0,21<i>c</i></span></div>
+        <div><img src="../assets/media/obs_sim.webp" width="1400" height="804" loading="lazy" alt="Forme d’onde simulée avec spectrogrammes des champs électrique et magnétique près de la fréquence plasma"><span class="tag">Simulation PIC, satellite virtuel, vitesse du faisceau 0,25<i>c</i></span></div>
+      </figure>
+    </div>
+  </div>
+</section>
+
 <section id="papers" class="block" aria-labelledby="papers-h">
   <div class="wrap">
     <h2 id="papers-h">Publications choisies</h2>
@@ -200,7 +235,7 @@
   <div class="wrap two">
     <div>
       <h2 id="about-h">À propos</h2>
-      <div class="prose"><p>J’ai grandi en Espagne et étudié la physique à l’Université de Séville, puis je suis venu en France pour le Master Physique des plasmas et fusion de l’Institut Polytechnique de Paris, qui m’a conduit à une thèse au Laboratoire de Physique des Plasmas.</p><p>Loin des simulations, je photographie le ciel nocturne. J’ai joué de la clarinette et du saxophone dans de nombreux ensembles, et je joue aussi de la flûte et de la guitare. Je parle espagnol, français et anglais, et je suis curieux des langues de toutes les familles, indo-européennes, sémitiques ou asiatiques. J’aime expliquer la science au public. En somme, je suis un passionné du savoir humain sous toutes ses formes.</p></div>
+      <div class="prose"><p>Je suis né à <button type="button" class="inl" aria-expanded="false" aria-controls="drawer-chiclana">Chiclana de la Frontera</button>, sur la côte atlantique du sud de l’Espagne, et j’ai étudié la physique à l’Université de Séville. Je suis ensuite venu en France pour le Master Physique des plasmas et fusion de l’Institut Polytechnique de Paris, qui m’a conduit à une thèse au Laboratoire de Physique des Plasmas.</p><div class="drawer" id="drawer-chiclana"><div class="drawer-in"><figure class="shot"><img src="../assets/media/chiclana_barrosa.webp" width="2000" height="878" loading="lazy" alt="Coucher de soleil sur l’Atlantique, plage de La Barrosa, Chiclana de la Frontera."><figcaption>Coucher de soleil sur l’Atlantique, plage de La Barrosa, Chiclana de la Frontera.</figcaption></figure></div></div><p>Loin des simulations, je <button type="button" class="inl" aria-expanded="false" aria-controls="drawer-astro">photographie le ciel</button>, du Soleil et de la Lune aux nébuleuses et aux amas d’étoiles. J’ai joué de la clarinette et du saxophone dans de nombreux ensembles, et je joue aussi de la flûte et de la guitare. Je parle espagnol, français et anglais, et je suis curieux des langues de toutes les familles, indo-européennes, sémitiques ou asiatiques. J’aime expliquer la science au public. En somme, je suis un passionné du savoir humain sous toutes ses formes.</p><div class="drawer" id="drawer-astro"><div class="drawer-in"><ul class="gallery"><li class="wide"><figure><button type="button" class="zoom" data-full="../assets/media/astro_andromeda.webp" data-cap="La galaxie d’Andromède (M31) et ses galaxies satellites M32 et M110."><img src="../assets/media/astro_andromeda.webp" width="1672" height="876" loading="lazy" alt="La galaxie d’Andromède (M31) et ses galaxies satellites M32 et M110."></button><figcaption>La galaxie d’Andromède (M31) et ses galaxies satellites M32 et M110.</figcaption></figure></li><li><figure><button type="button" class="zoom" data-full="../assets/media/astro_pleiades.webp" data-cap="Les Pléiades (M45) et la nébuleuse par réflexion bleue autour de leurs étoiles les plus brillantes."><img src="../assets/media/astro_pleiades.webp" width="655" height="1005" loading="lazy" alt="Les Pléiades (M45) et la nébuleuse par réflexion bleue autour de leurs étoiles les plus brillantes."></button><figcaption>Les Pléiades (M45) et la nébuleuse par réflexion bleue autour de leurs étoiles les plus brillantes.</figcaption></figure></li><li><figure><button type="button" class="zoom" data-full="../assets/media/astro_orion.webp" data-cap="La nébuleuse d’Orion (M42), avec au-dessus la nébuleuse de l’Homme qui court (NGC 1977)."><img src="../assets/media/astro_orion.webp" width="1354" height="1600" loading="lazy" alt="La nébuleuse d’Orion (M42), avec au-dessus la nébuleuse de l’Homme qui court (NGC 1977)."></button><figcaption>La nébuleuse d’Orion (M42), avec au-dessus la nébuleuse de l’Homme qui court (NGC 1977).</figcaption></figure></li><li><figure><button type="button" class="zoom" data-full="../assets/media/astro_moon.webp" data-cap="La Lune, 25 septembre 2026."><img src="../assets/media/astro_moon.webp" width="1200" height="1200" loading="lazy" alt="La Lune, 25 septembre 2026."></button><figcaption>La Lune, 25 septembre 2026.</figcaption></figure></li><li><figure><button type="button" class="zoom" data-full="../assets/media/astro_sun.webp" data-cap="Le Soleil derrière des branches, 25 septembre 2026."><img src="../assets/media/astro_sun.webp" width="1200" height="1200" loading="lazy" alt="Le Soleil derrière des branches, 25 septembre 2026."></button><figcaption>Le Soleil derrière des branches, 25 septembre 2026.</figcaption></figure></li><li><figure><button type="button" class="zoom" data-full="../assets/media/astro_orion2.webp" data-cap="La nébuleuse d’Orion (M42), une autre prise."><img src="../assets/media/astro_orion2.webp" width="860" height="924" loading="lazy" alt="La nébuleuse d’Orion (M42), une autre prise."></button><figcaption>La nébuleuse d’Orion (M42), une autre prise.</figcaption></figure></li></ul></div></div></div>
     </div>
     <div>
       <h2>Parcours</h2>
@@ -297,6 +332,14 @@
 }">Copier le BibTeX</button></p></li><li data-status="submitted" data-first="false"><p class="p-title" lang="en">Evidence of linear mode conversion of Langmuir/<span class="m">𝒵</span>-mode waves to electromagnetic waves in the solar wind</p><p class="p-auth">Krafft, C., <strong class="me">Polanco-Rodríguez, F. J.</strong>, Savoini, P.</p><p class="p-venue"><i>Astrophys. J. Lett.</i> (2026) <span class="status">Soumis</span></p></li><li data-status="review" data-first="false"><p class="p-title" lang="en">Beam–plasma interactions and the generation of Type III radio bursts</p><p class="p-auth">Krasnoselskikh, V., Krafft, C., et al. (15 authors)</p><p class="p-venue"><i>Space Sci. Rev.</i> (2026) <span class="status">Revue, à soumettre</span></p></li></ol>
     <ul class="profiles"><li><a href="https://orcid.org/0009-0005-2951-697X" rel="noopener">ORCID</a></li><li><a href="https://scholar.google.com/citations?user=uOhYwswAAAAJ&amp;hl=en" rel="noopener">Google Scholar</a></li><li><a href="https://www.researchgate.net/profile/Francisco-Polanco-Rodriguez" rel="noopener">ResearchGate</a></li><li><a href="https://theses.hal.science/tel-05825580" rel="noopener">HAL</a></li></ul>
   </div>
+</dialog>
+
+<dialog id="lightbox" class="lightbox" aria-label="À propos">
+  <button class="close" type="button" data-close aria-label="Fermer">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+  </button>
+  <img alt="">
+  <p></p>
 </dialog>
 
 <script type="application/json" id="i18n">{"copied": "Copié", "copy_bib": "Copier le BibTeX", "anim_pause": "Mettre l’animation en pause", "anim_play": "Lancer l’animation", "earth": "Terre"}</script>

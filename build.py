@@ -159,6 +159,36 @@ def talks_html(t):
     return '<h3>%s</h3><ol class="tl">%s</ol><h3>%s</h3><ol class="tl">%s</ol>' % (t['oral_h'], oral, t['posters_h'], post)
 
 
+ASTRO = [('astro_andromeda.webp', 1672, 876), ('astro_pleiades.webp', 655, 1005), ('astro_orion.webp', 1354, 1600), ('astro_moon.webp', 1200, 1200),
+         ('astro_sun.webp', 1200, 1200), ('astro_orion2.webp', 860, 924)]
+
+
+def drawer_html(name, t, root):
+    if name == 'chiclana':
+        inner = ('<figure class="shot"><img src="%sassets/media/chiclana_barrosa.webp" width="2000" height="878" '
+                 'loading="lazy" alt="%s"><figcaption>%s</figcaption></figure>') % (root, esc(t['chiclana_cap']), t['chiclana_cap'])
+    elif name == 'astro':
+        inner = '<ul class="gallery">%s</ul>' % ''.join(
+            '<li%s><figure><button type="button" class="zoom" data-full="%sassets/media/%s" data-cap="%s">'
+            '<img src="%sassets/media/%s" width="%d" height="%d" loading="lazy" alt="%s"></button>'
+            '<figcaption>%s</figcaption></figure></li>' % (' class="wide"' if w > 1.5 * h else '', root, f, esc(c), root, f, w, h, esc(c), c)
+            for (f, w, h), c in zip(ASTRO, t['astro_caps']))
+    else:
+        raise KeyError(name)
+    return '<div class="drawer" id="drawer-%s"><div class="drawer-in">%s</div></div>' % (name, inner)
+
+
+def about_html(t, root):
+    out = []
+    for para in t['about_text']:
+        names = re.findall(r'\[\[(\w+)\|', para)
+        para = re.sub(r'\[\[(\w+)\|(.+?)\]\]',
+                      r'<button type="button" class="inl" aria-expanded="false" aria-controls="drawer-\1">\2</button>', para)
+        out.append('<p>%s</p>' % para)
+        out += [drawer_html(n, t, root) for n in names]
+    return ''.join(out)
+
+
 def render(lang):
     t = dict(C.T[lang])
     root = rel_root(lang)
@@ -183,7 +213,8 @@ def render(lang):
         talks_html=talks_html(t),
         recent_talks_html=recent_talks_html(),
         selected_html=selected_html(),
-        about_html=''.join('<p>%s</p>' % p for p in t['about_text']),
+        about_html=about_html(t, root),
+        obs1_ref=ref_label('Polanco2025a'), obs2_ref=ref_label('Polanco2026b'),
         path_html=''.join('<li><span class="yr">%s</span><span>%s</span></li>' % r for r in t['path']),
         pubs_html=pubs_html(t),
         js_strings=json.dumps(dict(copied=t['copied'], copy_bib=t['copy_bib'],
@@ -197,7 +228,7 @@ def render(lang):
         }, ensure_ascii=False),
     )
     v['hero_role'] = t['hero_role'].replace(' · ', '<br>')
-    for k in ('meta_title', 'meta_desc', 'anim_label', 'anim_pause', 'spec_alt'):
+    for k in ('meta_title', 'meta_desc', 'anim_label', 'anim_pause', 'spec_alt', 'obs1_alt', 'obs_solo_alt', 'obs_sim_alt'):
         v[k] = esc(strip_tags(t[k]))
 
     tpl = (ROOT / 'src' / 'template.html').read_text(encoding='utf-8')

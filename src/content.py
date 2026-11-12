@@ -9,6 +9,7 @@ Z = '<span class="m">𝒵</span>'
 O = '<span class="m">𝒪</span>'
 X = '<span class="m">𝒳</span>'
 DN = 'Δ<i>N</i>'
+S_ = '<span class="m">𝒮</span>'
 
 ME = 'Polanco-Rodríguez, F. J.'
 
@@ -91,15 +92,16 @@ T['en'] = dict(
     meta_title='Francisco Javier Polanco-Rodríguez · Plasma physicist',
     meta_desc='Plasma physicist at the Laboratoire de Physique des Plasmas. Type III solar radio bursts, Langmuir waves and plasma emission, studied with PIC simulations, theory and Solar Orbiter observations.',
     skip='Skip to content',
-    nav_research='Research', nav_thesis='Thesis', nav_sims='Simulations', nav_teaching='Teaching',
+    nav_research='Research', nav_thesis='Thesis', nav_sims='Simulations', nav_obs='Observations', nav_teaching='Teaching',
     nav_about='About', nav_contact='Contact',
     btn_pubs='Publications', btn_cv='Download CV', btn_contact='Contact me',
     hero_role='Plasma physicist · Postdoctoral researcher (ATER), Laboratoire de Physique des Plasmas, École Polytechnique',
-    hero_lead='I study how electron beams from solar flares turn plasma waves into radio emission.',
+    hero_lead='I study how electron beams from solar flares generate plasma waves, and how these are converted into radio emission.',
     hero_sub='Type III solar radio bursts, Langmuir wave turbulence and plasma emission, approached with large-scale kinetic simulations, theory and Solar Orbiter observations.',
+    anim_title='Type III solar radio bursts',
     anim_label='Animation of a Type III radio burst',
-    anim_caption=f'A flare accelerates an electron beam along the magnetic field. In the turbulent solar wind the beam drives Langmuir waves, which convert part of their energy into radio emission at the plasma frequency {WP}. Radio telescopes and spacecraft detect it from afar, while probes such as Solar Orbiter and Parker Solar Probe cross the radio source and measure its waves in situ.',
-    legend_flare='Flare', legend_beam='Electron beam', legend_langmuir='Langmuir waves', legend_radio='Radio waves',
+    anim_caption=f'A flare accelerates an electron beam, which propagates along the open magnetic field lines. All along its path through the turbulent solar wind, the beam drives Langmuir waves. A chain of linear and nonlinear processes then converts part of their energy into radio emission at the plasma frequency {WP}. Despite seventy years of research, this chain is still not fully understood. Radio telescopes on Earth record this emission from afar. Spacecraft such as Solar Orbiter and Parker Solar Probe can, in addition, fly through the radio sources and measure their waves in situ.',
+    legend_flare='Flare', legend_beam='Electron beam', legend_langmuir='Langmuir waves', legend_radio='Radio waves', legend_fluct='Random density fluctuations',
     anim_pause='Pause animation', anim_play='Play animation',
 
     earth='Earth',
@@ -111,9 +113,9 @@ T['en'] = dict(
     research_intro=f'Electron beams travelling through the solar corona and wind excite Langmuir waves, and a chain of linear and nonlinear processes converts part of that energy into radio waves at the plasma frequency {WP} and its harmonic. I work on that chain: which processes act, how they compete, and what signature they leave in spacecraft measurements.',
     interests=[
         ('Plasma emission and solar radio bursts', f'Electromagnetic radiation at {WP} and 2{WP} during Type III bursts; mode conversion; radiation efficiency of {O}, {X} and {Z} modes.'),
-        ('Langmuir wave physics', 'Nonlinear wave–wave interactions, and linear transformations on random density fluctuations: scattering, refraction, reflection, trapping.'),
+        ('Langmuir wave turbulence', 'How beam-driven Langmuir turbulence evolves: energy transfer to small wavenumbers through cascades of nonlinear wave–wave decays, and linear transformations on random density fluctuations (scattering, refraction, reflection, trapping).'),
         ('Kinetic turbulence in the solar wind', 'Density fluctuations and intermittency at kinetic scales; wave–particle interactions and beam relaxation.'),
-        ('High-performance PIC simulations', 'Multidimensional particle-in-cell simulations on national supercomputers, with virtual satellites that record fields as a spacecraft would.'),
+        ('High-performance PIC simulations', 'Multidimensional particle-in-cell simulations on national supercomputers. I also implemented several analysis techniques, among them a new virtual satellite method that samples the simulated fields as a spacecraft would.'),
         ('In situ space data', 'High-cadence waveforms from Solar Orbiter (RPW/TDS) and Parker Solar Probe, analysed with the same diagnostics as the simulations.'),
         ('Machine learning for space plasma data', 'Automatic detection and classification of wave events in large spacecraft datasets.'),
         ('Beyond the Sun', 'The same wave–particle and wave–wave processes in astrophysical radio sources, planetary magnetospheres, and laboratory and laser-produced plasmas.'),
@@ -149,6 +151,20 @@ T['en'] = dict(
     v2_hom='Homogeneous', v2_inh='Δ<i>N</i> = 0.05',
     video_note='Videos play while visible. Use the controls to pause.',
 
+    obs_h='Solar wind observations',
+    obs_intro='A radio emission process first found in the simulations, then seen in space.',
+    obs1_k='Theory and simulations',
+    obs1_h=f'The decay cascade ends in the {Z} mode',
+    obs1_text=f'Beam-driven {LZ} waves decay again and again into {LZ} waves and ion acoustic waves {S_}, moving to ever smaller wavenumbers. In a magnetized plasma, the last step produces electromagnetic {Z}-mode waves.',
+    obs1_alt='Diagram of the electrostatic decay cascade of Langmuir/Z-mode waves ending in Z-mode waves, on the dispersion curve',
+    obs2_k='Solar Orbiter',
+    obs2_h='Observed in the solar wind for the first time',
+    obs2_text=f'Electric and magnetic spectra of a Solar Orbiter waveform match those recorded by a virtual satellite in the simulation. The magnetic signal near the plasma frequency comes from the electromagnetic {Z}-mode waves produced by the decay.',
+    obs_solo='Solar Orbiter (RPW/TDS), beam speed ≈ 0.21<i>c</i>',
+    obs_sim='PIC simulation, virtual satellite, beam speed 0.25<i>c</i>',
+    obs_solo_alt='Solar Orbiter waveform with electric and magnetic field spectrograms near the plasma frequency',
+    obs_sim_alt='Simulated waveform with electric and magnetic field spectrograms near the plasma frequency',
+
     honors_h='Recognition',
     honors=[
         ('2022', 'Excellence scholarship, EUR PlasmaScience (Master 2, ranked 2nd of 20).'),
@@ -169,8 +185,17 @@ T['en'] = dict(
 
     about_h='About',
     about_text=[
-        'I grew up in Spain, studied physics at the University of Seville, then came to France for the Master in Plasma Physics and Fusion at Institut Polytechnique de Paris, which led to a PhD at the Laboratoire de Physique des Plasmas.',
-        'Away from the simulations I photograph the night sky. I have played clarinet and saxophone in many bands and ensembles, and also play flute and guitar. I speak Spanish, French and English, and I am curious about languages of every family, Indo-European, Semitic or Asian. I enjoy explaining science to the public. In short, I am an enthusiast of human knowledge in all its forms.',
+        'I was born in [[chiclana|Chiclana de la Frontera]], on the Atlantic coast of southern Spain, and studied physics at the University of Seville. I then came to France for the Master in Plasma Physics and Fusion at Institut Polytechnique de Paris, which led to a PhD at the Laboratoire de Physique des Plasmas.',
+        'Away from the simulations I [[astro|photograph the sky]], from the Sun and the Moon to nebulae and star clusters. I have played clarinet and saxophone in many bands and ensembles, and also play flute and guitar. I speak Spanish, French and English, and I am curious about languages of every family, Indo-European, Semitic or Asian. I enjoy explaining science to the public. In short, I am an enthusiast of human knowledge in all its forms.',
+    ],
+    chiclana_cap='Sunset over the Atlantic at La Barrosa beach, Chiclana de la Frontera.',
+    astro_caps=[
+        'The Andromeda Galaxy (M31) with its satellite galaxies M32 and M110.',
+        'The Pleiades (M45) and the blue reflection nebula around their brightest stars.',
+        'The Orion Nebula (M42), with the Running Man Nebula (NGC 1977) above it.',
+        'The Moon, 25 September 2026.',
+        'The Sun behind tree branches, 25 September 2026.',
+        'The Orion Nebula (M42), another take.',
     ],
     path_h='Path',
     path=[
@@ -200,15 +225,16 @@ T['fr'] = dict(
     meta_title='Francisco Javier Polanco-Rodríguez · Physicien des plasmas',
     meta_desc='Physicien des plasmas au Laboratoire de Physique des Plasmas. Sursauts radio solaires de type III, ondes de Langmuir et émission plasma, étudiés par simulations PIC, théorie et observations de Solar Orbiter.',
     skip='Aller au contenu',
-    nav_research='Recherche', nav_thesis='Thèse', nav_sims='Simulations', nav_teaching='Enseignement',
+    nav_research='Recherche', nav_thesis='Thèse', nav_sims='Simulations', nav_obs='Observations', nav_teaching='Enseignement',
     nav_about='À propos', nav_contact='Contact',
     btn_pubs='Publications', btn_cv='Télécharger le CV', btn_contact='Me contacter',
     hero_role='Physicien des plasmas · Chercheur postdoctoral (ATER), Laboratoire de Physique des Plasmas, École Polytechnique',
-    hero_lead='J’étudie comment les faisceaux d’électrons des éruptions solaires transforment les ondes plasma en émission radio.',
+    hero_lead='J’étudie comment les faisceaux d’électrons des éruptions solaires génèrent des ondes plasma, et comment celles-ci se convertissent en émission radio.',
     hero_sub='Sursauts radio de type III, turbulence d’ondes de Langmuir et émission plasma, abordés par des simulations cinétiques à grande échelle, la théorie et les observations de Solar Orbiter.',
+    anim_title='Les sursauts radio solaires de type III',
     anim_label='Animation d’un sursaut radio de type III',
-    anim_caption=f'Une éruption accélère un faisceau d’électrons le long du champ magnétique. Dans le vent solaire turbulent, le faisceau excite des ondes de Langmuir, qui convertissent une partie de leur énergie en émission radio à la fréquence plasma {WP}. Radiotélescopes et sondes la détectent à distance, tandis que des sondes comme Solar Orbiter et Parker Solar Probe traversent la source radio et mesurent ses ondes in situ.',
-    legend_flare='Éruption', legend_beam='Faisceau d’électrons', legend_langmuir='Ondes de Langmuir', legend_radio='Ondes radio',
+    anim_caption=f'Une éruption accélère un faisceau d’électrons, qui se propage le long des lignes de champ magnétique ouvertes. Tout au long de son trajet dans le vent solaire turbulent, le faisceau excite des ondes de Langmuir. Une chaîne de processus linéaires et non linéaires convertit ensuite une partie de leur énergie en émission radio à la fréquence plasma {WP}. Malgré soixante-dix ans de recherche, cette chaîne n’est pas encore entièrement comprise. Les radiotélescopes sur Terre enregistrent cette émission à distance. Des sondes comme Solar Orbiter et Parker Solar Probe peuvent en outre traverser les sources radio et mesurer leurs ondes in situ.',
+    legend_flare='Éruption', legend_beam='Faisceau d’électrons', legend_langmuir='Ondes de Langmuir', legend_radio='Ondes radio', legend_fluct='Fluctuations aléatoires de densité',
     anim_pause='Mettre l’animation en pause', anim_play='Lancer l’animation',
 
     earth='Terre',
@@ -220,9 +246,9 @@ T['fr'] = dict(
     research_intro=f'Les faisceaux d’électrons qui traversent la couronne et le vent solaire excitent des ondes de Langmuir, et une chaîne de processus linéaires et non linéaires convertit une partie de cette énergie en ondes radio à la fréquence plasma {WP} et à son harmonique. Je travaille sur cette chaîne : quels processus agissent, comment ils entrent en compétition, et quelle signature ils laissent dans les mesures des sondes spatiales.',
     interests=[
         ('Émission plasma et sursauts radio solaires', f'Rayonnement électromagnétique à {WP} et 2{WP} lors des sursauts de type III ; conversion de modes ; efficacité de rayonnement des modes {O}, {X} et {Z}.'),
-        ('Physique des ondes de Langmuir', 'Interactions non linéaires onde–onde, et transformations linéaires sur des fluctuations aléatoires de densité : diffusion, réfraction, réflexion, piégeage.'),
+        ('Turbulence d’ondes de Langmuir', 'Évolution de la turbulence de Langmuir excitée par le faisceau : transfert d’énergie vers les petits nombres d’onde par des cascades de décroissances non linéaires onde–onde, et transformations linéaires sur des fluctuations aléatoires de densité (diffusion, réfraction, réflexion, piégeage).'),
         ('Turbulence cinétique du vent solaire', 'Fluctuations de densité et intermittence aux échelles cinétiques ; interactions onde–particule et relaxation du faisceau.'),
-        ('Simulations PIC haute performance', 'Simulations particle-in-cell multidimensionnelles sur les supercalculateurs nationaux, avec des satellites virtuels qui enregistrent les champs comme le ferait une sonde.'),
+        ('Simulations PIC haute performance', 'Simulations particle-in-cell multidimensionnelles sur les supercalculateurs nationaux. J’ai aussi mis en place plusieurs techniques d’analyse, dont une nouvelle méthode de satellites virtuels qui échantillonnent les champs simulés comme le ferait une sonde.'),
         ('Données spatiales in situ', 'Formes d’onde haute cadence de Solar Orbiter (RPW/TDS) et de Parker Solar Probe, analysées avec les mêmes diagnostics que les simulations.'),
         ('Apprentissage automatique pour les plasmas spatiaux', 'Détection et classification automatiques d’événements ondulatoires dans de grands jeux de données spatiales.'),
         ('Au-delà du Soleil', 'Les mêmes processus onde–particule et onde–onde dans les sources radio astrophysiques, les magnétosphères planétaires et les plasmas de laboratoire et laser.'),
@@ -258,6 +284,20 @@ T['fr'] = dict(
     v2_hom='Homogène', v2_inh='Δ<i>N</i> = 0,05',
     video_note='Les vidéos se lancent lorsqu’elles sont visibles. Utilisez les contrôles pour les mettre en pause.',
 
+    obs_h='Observations dans le vent solaire',
+    obs_intro='Un processus d’émission radio découvert d’abord en simulation, puis observé dans l’espace.',
+    obs1_k='Théorie et simulations',
+    obs1_h=f'La cascade de décroissance aboutit au mode {Z}',
+    obs1_text=f'Les ondes {LZ} excitées par le faisceau se désintègrent successivement en ondes {LZ} et en ondes acoustiques ioniques {S_}, vers des nombres d’onde de plus en plus petits. Dans un plasma magnétisé, la dernière étape produit des ondes électromagnétiques en mode {Z}.',
+    obs1_alt='Schéma de la cascade de décroissance électrostatique des ondes Langmuir/mode Z aboutissant au mode Z, sur la courbe de dispersion',
+    obs2_k='Solar Orbiter',
+    obs2_h='Observée pour la première fois dans le vent solaire',
+    obs2_text=f'Les spectres électrique et magnétique d’une forme d’onde de Solar Orbiter correspondent à ceux enregistrés par un satellite virtuel dans la simulation. Le signal magnétique proche de la fréquence plasma provient des ondes électromagnétiques en mode {Z} produites par la décroissance.',
+    obs_solo='Solar Orbiter (RPW/TDS), vitesse du faisceau ≈ 0,21<i>c</i>',
+    obs_sim='Simulation PIC, satellite virtuel, vitesse du faisceau 0,25<i>c</i>',
+    obs_solo_alt='Forme d’onde de Solar Orbiter avec spectrogrammes des champs électrique et magnétique près de la fréquence plasma',
+    obs_sim_alt='Forme d’onde simulée avec spectrogrammes des champs électrique et magnétique près de la fréquence plasma',
+
     honors_h='Distinctions',
     honors=[
         ('2022', 'Bourse d’excellence EUR PlasmaScience (Master 2, classé 2e sur 20).'),
@@ -278,8 +318,17 @@ T['fr'] = dict(
 
     about_h='À propos',
     about_text=[
-        'J’ai grandi en Espagne et étudié la physique à l’Université de Séville, puis je suis venu en France pour le Master Physique des plasmas et fusion de l’Institut Polytechnique de Paris, qui m’a conduit à une thèse au Laboratoire de Physique des Plasmas.',
-        'Loin des simulations, je photographie le ciel nocturne. J’ai joué de la clarinette et du saxophone dans de nombreux ensembles, et je joue aussi de la flûte et de la guitare. Je parle espagnol, français et anglais, et je suis curieux des langues de toutes les familles, indo-européennes, sémitiques ou asiatiques. J’aime expliquer la science au public. En somme, je suis un passionné du savoir humain sous toutes ses formes.',
+        'Je suis né à [[chiclana|Chiclana de la Frontera]], sur la côte atlantique du sud de l’Espagne, et j’ai étudié la physique à l’Université de Séville. Je suis ensuite venu en France pour le Master Physique des plasmas et fusion de l’Institut Polytechnique de Paris, qui m’a conduit à une thèse au Laboratoire de Physique des Plasmas.',
+        'Loin des simulations, je [[astro|photographie le ciel]], du Soleil et de la Lune aux nébuleuses et aux amas d’étoiles. J’ai joué de la clarinette et du saxophone dans de nombreux ensembles, et je joue aussi de la flûte et de la guitare. Je parle espagnol, français et anglais, et je suis curieux des langues de toutes les familles, indo-européennes, sémitiques ou asiatiques. J’aime expliquer la science au public. En somme, je suis un passionné du savoir humain sous toutes ses formes.',
+    ],
+    chiclana_cap='Coucher de soleil sur l’Atlantique, plage de La Barrosa, Chiclana de la Frontera.',
+    astro_caps=[
+        'La galaxie d’Andromède (M31) et ses galaxies satellites M32 et M110.',
+        'Les Pléiades (M45) et la nébuleuse par réflexion bleue autour de leurs étoiles les plus brillantes.',
+        'La nébuleuse d’Orion (M42), avec au-dessus la nébuleuse de l’Homme qui court (NGC 1977).',
+        'La Lune, 25 septembre 2026.',
+        'Le Soleil derrière des branches, 25 septembre 2026.',
+        'La nébuleuse d’Orion (M42), une autre prise.',
     ],
     path_h='Parcours',
     path=[
@@ -309,15 +358,16 @@ T['es'] = dict(
     meta_title='Francisco Javier Polanco-Rodríguez · Físico de plasmas',
     meta_desc='Físico de plasmas en el Laboratoire de Physique des Plasmas. Estallidos de radio solares de tipo III, ondas de Langmuir y emisión de plasma, estudiados con simulaciones PIC, teoría y observaciones de Solar Orbiter.',
     skip='Ir al contenido',
-    nav_research='Investigación', nav_thesis='Tesis', nav_sims='Simulaciones', nav_teaching='Docencia',
+    nav_research='Investigación', nav_thesis='Tesis', nav_sims='Simulaciones', nav_obs='Observaciones', nav_teaching='Docencia',
     nav_about='Sobre mí', nav_contact='Contacto',
     btn_pubs='Publicaciones', btn_cv='Descargar CV', btn_contact='Contactar',
     hero_role='Físico de plasmas · Investigador posdoctoral (ATER), Laboratoire de Physique des Plasmas, École Polytechnique',
-    hero_lead='Estudio cómo los haces de electrones de las erupciones solares convierten las ondas de plasma en emisión de radio.',
+    hero_lead='Estudio cómo los haces de electrones de las erupciones solares generan ondas de plasma, y cómo estas se convierten en emisión de radio.',
     hero_sub='Estallidos de radio de tipo III, turbulencia de ondas de Langmuir y emisión de plasma, abordados con simulaciones cinéticas a gran escala, teoría y observaciones de Solar Orbiter.',
+    anim_title='Los estallidos de radio solares de tipo III',
     anim_label='Animación de un estallido de radio de tipo III',
-    anim_caption=f'Una llamarada solar acelera un haz de electrones a lo largo del campo magnético. En el viento solar turbulento, el haz excita ondas de Langmuir, que convierten parte de su energía en emisión de radio a la frecuencia de plasma {WP}. Radiotelescopios y sondas la detectan a distancia, mientras que sondas como Solar Orbiter y Parker Solar Probe atraviesan la fuente de radio y miden sus ondas in situ.',
-    legend_flare='Llamarada solar', legend_beam='Haz de electrones', legend_langmuir='Ondas de Langmuir', legend_radio='Ondas de radio',
+    anim_caption=f'Una llamarada solar acelera un haz de electrones, que se propaga a lo largo de las líneas de campo magnético abiertas. A lo largo de todo su recorrido por el viento solar turbulento, el haz excita ondas de Langmuir. Una cadena de procesos lineales y no lineales convierte después parte de su energía en emisión de radio a la frecuencia de plasma {WP}. A pesar de setenta años de investigación, esta cadena aún no se comprende del todo. Los radiotelescopios en la Tierra registran esta emisión a distancia. Sondas como Solar Orbiter y Parker Solar Probe pueden, además, atravesar las fuentes de radio y medir sus ondas in situ.',
+    legend_flare='Llamarada solar', legend_beam='Haz de electrones', legend_langmuir='Ondas de Langmuir', legend_radio='Ondas de radio', legend_fluct='Fluctuaciones aleatorias de densidad',
     anim_pause='Pausar la animación', anim_play='Reproducir la animación',
 
     earth='Tierra',
@@ -329,9 +379,9 @@ T['es'] = dict(
     research_intro=f'Los haces de electrones que atraviesan la corona y el viento solar excitan ondas de Langmuir, y una cadena de procesos lineales y no lineales convierte parte de esa energía en ondas de radio a la frecuencia de plasma {WP} y a su armónico. Trabajo sobre esa cadena: qué procesos actúan, cómo compiten y qué huella dejan en las medidas de las sondas espaciales.',
     interests=[
         ('Emisión de plasma y estallidos de radio solares', f'Radiación electromagnética a {WP} y 2{WP} durante los estallidos de tipo III; conversión de modos; eficiencia de radiación de los modos {O}, {X} y {Z}.'),
-        ('Física de las ondas de Langmuir', 'Interacciones no lineales onda–onda, y transformaciones lineales sobre fluctuaciones aleatorias de densidad: dispersión, refracción, reflexión, atrapamiento.'),
+        ('Turbulencia de ondas de Langmuir', 'Evolución de la turbulencia de Langmuir excitada por el haz: transferencia de energía hacia números de onda pequeños mediante cascadas de decaimientos no lineales onda–onda, y transformaciones lineales sobre fluctuaciones aleatorias de densidad (dispersión, refracción, reflexión, atrapamiento).'),
         ('Turbulencia cinética del viento solar', 'Fluctuaciones de densidad e intermitencia a escalas cinéticas; interacciones onda–partícula y relajación del haz.'),
-        ('Simulaciones PIC de alto rendimiento', 'Simulaciones particle-in-cell multidimensionales en supercomputadores nacionales, con satélites virtuales que registran los campos como lo haría una sonda.'),
+        ('Simulaciones PIC de alto rendimiento', 'Simulaciones particle-in-cell multidimensionales en supercomputadores nacionales. También he implementado varias técnicas de análisis, entre ellas un nuevo método de satélites virtuales que muestrean los campos simulados como lo haría una sonda.'),
         ('Datos espaciales in situ', 'Formas de onda de alta cadencia de Solar Orbiter (RPW/TDS) y Parker Solar Probe, analizadas con los mismos diagnósticos que las simulaciones.'),
         ('Aprendizaje automático para plasmas espaciales', 'Detección y clasificación automáticas de eventos de ondas en grandes conjuntos de datos espaciales.'),
         ('Más allá del Sol', 'Los mismos procesos onda–partícula y onda–onda en fuentes de radio astrofísicas, magnetosferas planetarias y plasmas de laboratorio y láser.'),
@@ -367,6 +417,20 @@ T['es'] = dict(
     v2_hom='Homogéneo', v2_inh='Δ<i>N</i> = 0,05',
     video_note='Los vídeos se reproducen cuando están visibles. Usa los controles para pausarlos.',
 
+    obs_h='Observaciones en el viento solar',
+    obs_intro='Un proceso de emisión de radio descubierto primero en simulaciones y observado después en el espacio.',
+    obs1_k='Teoría y simulaciones',
+    obs1_h=f'La cascada de decaimiento termina en el modo {Z}',
+    obs1_text=f'Las ondas {LZ} excitadas por el haz decaen una y otra vez en ondas {LZ} y ondas acústicas iónicas {S_}, hacia números de onda cada vez más pequeños. En un plasma magnetizado, el último paso produce ondas electromagnéticas en modo {Z}.',
+    obs1_alt='Esquema de la cascada de decaimiento electrostático de las ondas Langmuir/modo Z que termina en el modo Z, sobre la curva de dispersión',
+    obs2_k='Solar Orbiter',
+    obs2_h='Observado por primera vez en el viento solar',
+    obs2_text=f'Los espectros eléctrico y magnético de una forma de onda de Solar Orbiter coinciden con los que registra un satélite virtual en la simulación. La señal magnética cerca de la frecuencia de plasma procede de las ondas electromagnéticas en modo {Z} producidas por el decaimiento.',
+    obs_solo='Solar Orbiter (RPW/TDS), velocidad del haz ≈ 0,21<i>c</i>',
+    obs_sim='Simulación PIC, satélite virtual, velocidad del haz 0,25<i>c</i>',
+    obs_solo_alt='Forma de onda de Solar Orbiter con espectrogramas de los campos eléctrico y magnético cerca de la frecuencia de plasma',
+    obs_sim_alt='Forma de onda simulada con espectrogramas de los campos eléctrico y magnético cerca de la frecuencia de plasma',
+
     honors_h='Reconocimientos',
     honors=[
         ('2022', 'Beca de excelencia EUR PlasmaScience (Máster 2, segundo de 20).'),
@@ -387,8 +451,17 @@ T['es'] = dict(
 
     about_h='Sobre mí',
     about_text=[
-        'Crecí en España y estudié física en la Universidad de Sevilla. Después vine a Francia para el Máster en Física de Plasmas y Fusión del Institut Polytechnique de Paris, que me llevó a un doctorado en el Laboratoire de Physique des Plasmas.',
-        'Lejos de las simulaciones, fotografío el cielo nocturno. He tocado el clarinete y el saxofón en numerosas agrupaciones musicales, y también toco la flauta y la guitarra. Hablo español, francés e inglés, y siento curiosidad por lenguas de todas las familias, indoeuropeas, semíticas o asiáticas. Me gusta explicar la ciencia al público. En resumen, soy un aficionado al conocimiento humano en todas sus formas.',
+        'Nací en [[chiclana|Chiclana de la Frontera]], en la costa atlántica de Cádiz, y estudié física en la Universidad de Sevilla. Después vine a Francia para el Máster en Física de Plasmas y Fusión del Institut Polytechnique de Paris, que me llevó a un doctorado en el Laboratoire de Physique des Plasmas.',
+        'Lejos de las simulaciones, [[astro|fotografío el cielo]], del Sol y la Luna a nebulosas y cúmulos de estrellas. He tocado el clarinete y el saxofón en numerosas agrupaciones musicales, y también toco la flauta y la guitarra. Hablo español, francés e inglés, y siento curiosidad por lenguas de todas las familias, indoeuropeas, semíticas o asiáticas. Me gusta explicar la ciencia al público. En resumen, soy un aficionado al conocimiento humano en todas sus formas.',
+    ],
+    chiclana_cap='Puesta de sol sobre el Atlántico en la playa de La Barrosa, Chiclana de la Frontera.',
+    astro_caps=[
+        'La galaxia de Andrómeda (M31) con sus galaxias satélite M32 y M110.',
+        'Las Pléyades (M45) y la nebulosa de reflexión azul alrededor de sus estrellas más brillantes.',
+        'La nebulosa de Orión (M42), con la nebulosa del Hombre Corriendo (NGC 1977) encima.',
+        'La Luna, 25 de septiembre de 2026.',
+        'El Sol tras las ramas de un árbol, 25 de septiembre de 2026.',
+        'La nebulosa de Orión (M42), otra toma.',
     ],
     path_h='Trayectoria',
     path=[

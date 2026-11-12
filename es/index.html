@@ -36,6 +36,7 @@
       <a href="#research">Investigación</a>
       <a href="#thesis">Tesis</a>
       <a href="#simulations">Simulaciones</a>
+      <a href="#observations">Observaciones</a>
       <a href="#teaching">Docencia</a>
       <a href="#about">Sobre mí</a>
       <a href="#contact">Contacto</a>
@@ -54,7 +55,7 @@
   <div class="wrap hero-text">
     <p class="role">Físico de plasmas<br>Investigador posdoctoral (ATER), Laboratoire de Physique des Plasmas, École Polytechnique</p>
     <h1 id="name">Francisco Javier <span>Polanco-Rodríguez</span></h1>
-    <p class="lead">Estudio cómo los haces de electrones de las erupciones solares convierten las ondas de plasma en emisión de radio.</p>
+    <p class="lead">Estudio cómo los haces de electrones de las erupciones solares generan ondas de plasma, y cómo estas se convierten en emisión de radio.</p>
     <p class="sub">Estallidos de radio de tipo III, turbulencia de ondas de Langmuir y emisión de plasma, abordados con simulaciones cinéticas a gran escala, teoría y observaciones de Solar Orbiter.</p>
     <div class="actions">
       <a class="btn primary" href="#publications" data-open-pubs>Publicaciones <span class="count">8</span></a>
@@ -64,7 +65,8 @@
     <ul class="profiles"><li><a href="https://orcid.org/0009-0005-2951-697X" rel="noopener">ORCID</a></li><li><a href="https://scholar.google.com/citations?user=uOhYwswAAAAJ&amp;hl=en" rel="noopener">Google Scholar</a></li><li><a href="https://www.researchgate.net/profile/Francisco-Polanco-Rodriguez" rel="noopener">ResearchGate</a></li><li><a href="https://theses.hal.science/tel-05825580" rel="noopener">HAL</a></li></ul>
   </div>
 
-  <figure class="burst">
+  <figure class="burst" aria-labelledby="burst-title">
+    <p class="wrap burst-title" id="burst-title">Los estallidos de radio solares de tipo III</p>
     <canvas id="burst" role="img" aria-label="Animación de un estallido de radio de tipo III"></canvas>
     <button class="burst-toggle" type="button" aria-pressed="false" aria-label="Pausar la animación">
       <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="2.6" height="10" rx="1"/><rect x="9.4" y="3" width="2.6" height="10" rx="1"/></svg>
@@ -76,8 +78,9 @@
         <li style="--c: var(--beam)"><span>Haz de electrones</span></li>
         <li style="--c: var(--langmuir)"><span>Ondas de Langmuir</span></li>
         <li style="--c: var(--radio)"><span>Ondas de radio</span></li>
+        <li class="fl"><span>Fluctuaciones aleatorias de densidad</span></li>
       </ul>
-      <p>Una llamarada solar acelera un haz de electrones a lo largo del campo magnético. En el viento solar turbulento, el haz excita ondas de Langmuir, que convierten parte de su energía en emisión de radio a la frecuencia de plasma <i>ω</i><sub>p</sub>. Radiotelescopios y sondas la detectan a distancia, mientras que sondas como Solar Orbiter y Parker Solar Probe atraviesan la fuente de radio y miden sus ondas in situ.</p>
+      <p>Una llamarada solar acelera un haz de electrones, que se propaga a lo largo de las líneas de campo magnético abiertas. A lo largo de todo su recorrido por el viento solar turbulento, el haz excita ondas de Langmuir. Una cadena de procesos lineales y no lineales convierte después parte de su energía en emisión de radio a la frecuencia de plasma <i>ω</i><sub>p</sub>. A pesar de setenta años de investigación, esta cadena aún no se comprende del todo. Los radiotelescopios en la Tierra registran esta emisión a distancia. Sondas como Solar Orbiter y Parker Solar Probe pueden, además, atravesar las fuentes de radio y medir sus ondas in situ.</p>
     </figcaption>
   </figure>
 </section>
@@ -94,7 +97,7 @@
         <p class="credit">Datos de Solar Orbiter/RPW, adaptado de <a href="https://parker.gsfc.nasa.gov/crocs.html" rel="noopener">CROCS</a> (NASA GSFC).</p>
       </figcaption>
     </figure>
-    <ul class="interests"><li><h3>Emisión de plasma y estallidos de radio solares</h3><p>Radiación electromagnética a <i>ω</i><sub>p</sub> y 2<i>ω</i><sub>p</sub> durante los estallidos de tipo III; conversión de modos; eficiencia de radiación de los modos <span class="m">𝒪</span>, <span class="m">𝒳</span> y <span class="m">𝒵</span>.</p></li><li><h3>Física de las ondas de Langmuir</h3><p>Interacciones no lineales onda–onda, y transformaciones lineales sobre fluctuaciones aleatorias de densidad: dispersión, refracción, reflexión, atrapamiento.</p></li><li><h3>Turbulencia cinética del viento solar</h3><p>Fluctuaciones de densidad e intermitencia a escalas cinéticas; interacciones onda–partícula y relajación del haz.</p></li><li><h3>Simulaciones PIC de alto rendimiento</h3><p>Simulaciones particle-in-cell multidimensionales en supercomputadores nacionales, con satélites virtuales que registran los campos como lo haría una sonda.</p></li><li><h3>Datos espaciales in situ</h3><p>Formas de onda de alta cadencia de Solar Orbiter (RPW/TDS) y Parker Solar Probe, analizadas con los mismos diagnósticos que las simulaciones.</p></li><li><h3>Aprendizaje automático para plasmas espaciales</h3><p>Detección y clasificación automáticas de eventos de ondas en grandes conjuntos de datos espaciales.</p></li><li><h3>Más allá del Sol</h3><p>Los mismos procesos onda–partícula y onda–onda en fuentes de radio astrofísicas, magnetosferas planetarias y plasmas de laboratorio y láser.</p></li></ul>
+    <ul class="interests"><li><h3>Emisión de plasma y estallidos de radio solares</h3><p>Radiación electromagnética a <i>ω</i><sub>p</sub> y 2<i>ω</i><sub>p</sub> durante los estallidos de tipo III; conversión de modos; eficiencia de radiación de los modos <span class="m">𝒪</span>, <span class="m">𝒳</span> y <span class="m">𝒵</span>.</p></li><li><h3>Turbulencia de ondas de Langmuir</h3><p>Evolución de la turbulencia de Langmuir excitada por el haz: transferencia de energía hacia números de onda pequeños mediante cascadas de decaimientos no lineales onda–onda, y transformaciones lineales sobre fluctuaciones aleatorias de densidad (dispersión, refracción, reflexión, atrapamiento).</p></li><li><h3>Turbulencia cinética del viento solar</h3><p>Fluctuaciones de densidad e intermitencia a escalas cinéticas; interacciones onda–partícula y relajación del haz.</p></li><li><h3>Simulaciones PIC de alto rendimiento</h3><p>Simulaciones particle-in-cell multidimensionales en supercomputadores nacionales. También he implementado varias técnicas de análisis, entre ellas un nuevo método de satélites virtuales que muestrean los campos simulados como lo haría una sonda.</p></li><li><h3>Datos espaciales in situ</h3><p>Formas de onda de alta cadencia de Solar Orbiter (RPW/TDS) y Parker Solar Probe, analizadas con los mismos diagnósticos que las simulaciones.</p></li><li><h3>Aprendizaje automático para plasmas espaciales</h3><p>Detección y clasificación automáticas de eventos de ondas en grandes conjuntos de datos espaciales.</p></li><li><h3>Más allá del Sol</h3><p>Los mismos procesos onda–partícula y onda–onda en fuentes de radio astrofísicas, magnetosferas planetarias y plasmas de laboratorio y láser.</p></li></ul>
   </div>
 </section>
 
@@ -167,6 +170,38 @@
   </div>
 </section>
 
+<section id="observations" class="block obs" aria-labelledby="obs-h">
+  <div class="wrap">
+    <h2 id="obs-h">Observaciones en el viento solar</h2>
+    <p class="intro small-intro">Un proceso de emisión de radio descubierto primero en simulaciones y observado después en el espacio.</p>
+
+    <div class="obs-step">
+      <div class="obs-text">
+        <p class="kicker"><span>1</span>Teoría y simulaciones</p>
+        <h3>La cascada de decaimiento termina en el modo <span class="m">𝒵</span></h3>
+        <p>Las ondas <span class="m">ℒ𝒵</span> excitadas por el haz decaen una y otra vez en ondas <span class="m">ℒ𝒵</span> y ondas acústicas iónicas <span class="m">𝒮</span>, hacia números de onda cada vez más pequeños. En un plasma magnetizado, el último paso produce ondas electromagnéticas en modo <span class="m">𝒵</span>.</p>
+        <p class="refs"><a href="https://doi.org/10.3847/2041-8213/adba64" rel="noopener">ApJL 2025</a></p>
+      </div>
+      <figure class="obs-fig">
+        <img src="../assets/media/obs_cascade.webp" width="1800" height="546" loading="lazy" alt="Esquema de la cascada de decaimiento electrostático de las ondas Langmuir/modo Z que termina en el modo Z, sobre la curva de dispersión">
+      </figure>
+    </div>
+
+    <div class="obs-step">
+      <div class="obs-text">
+        <p class="kicker"><span>2</span>Solar Orbiter</p>
+        <h3>Observado por primera vez en el viento solar</h3>
+        <p>Los espectros eléctrico y magnético de una forma de onda de Solar Orbiter coinciden con los que registra un satélite virtual en la simulación. La señal magnética cerca de la frecuencia de plasma procede de las ondas electromagnéticas en modo <span class="m">𝒵</span> producidas por el decaimiento.</p>
+        <p class="refs"><a href="https://doi.org/10.3847/2041-8213/ae626f" rel="noopener">ApJL 2026</a></p>
+      </div>
+      <figure class="obs-pair">
+        <div><img src="../assets/media/obs_solo.webp" width="1400" height="827" loading="lazy" alt="Forma de onda de Solar Orbiter con espectrogramas de los campos eléctrico y magnético cerca de la frecuencia de plasma"><span class="tag">Solar Orbiter (RPW/TDS), velocidad del haz ≈ 0,21<i>c</i></span></div>
+        <div><img src="../assets/media/obs_sim.webp" width="1400" height="804" loading="lazy" alt="Forma de onda simulada con espectrogramas de los campos eléctrico y magnético cerca de la frecuencia de plasma"><span class="tag">Simulación PIC, satélite virtual, velocidad del haz 0,25<i>c</i></span></div>
+      </figure>
+    </div>
+  </div>
+</section>
+
 <section id="papers" class="block" aria-labelledby="papers-h">
   <div class="wrap">
     <h2 id="papers-h">Publicaciones destacadas</h2>
@@ -200,7 +235,7 @@
   <div class="wrap two">
     <div>
       <h2 id="about-h">Sobre mí</h2>
-      <div class="prose"><p>Crecí en España y estudié física en la Universidad de Sevilla. Después vine a Francia para el Máster en Física de Plasmas y Fusión del Institut Polytechnique de Paris, que me llevó a un doctorado en el Laboratoire de Physique des Plasmas.</p><p>Lejos de las simulaciones, fotografío el cielo nocturno. He tocado el clarinete y el saxofón en numerosas agrupaciones musicales, y también toco la flauta y la guitarra. Hablo español, francés e inglés, y siento curiosidad por lenguas de todas las familias, indoeuropeas, semíticas o asiáticas. Me gusta explicar la ciencia al público. En resumen, soy un aficionado al conocimiento humano en todas sus formas.</p></div>
+      <div class="prose"><p>Nací en <button type="button" class="inl" aria-expanded="false" aria-controls="drawer-chiclana">Chiclana de la Frontera</button>, en la costa atlántica de Cádiz, y estudié física en la Universidad de Sevilla. Después vine a Francia para el Máster en Física de Plasmas y Fusión del Institut Polytechnique de Paris, que me llevó a un doctorado en el Laboratoire de Physique des Plasmas.</p><div class="drawer" id="drawer-chiclana"><div class="drawer-in"><figure class="shot"><img src="../assets/media/chiclana_barrosa.webp" width="2000" height="878" loading="lazy" alt="Puesta de sol sobre el Atlántico en la playa de La Barrosa, Chiclana de la Frontera."><figcaption>Puesta de sol sobre el Atlántico en la playa de La Barrosa, Chiclana de la Frontera.</figcaption></figure></div></div><p>Lejos de las simulaciones, <button type="button" class="inl" aria-expanded="false" aria-controls="drawer-astro">fotografío el cielo</button>, del Sol y la Luna a nebulosas y cúmulos de estrellas. He tocado el clarinete y el saxofón en numerosas agrupaciones musicales, y también toco la flauta y la guitarra. Hablo español, francés e inglés, y siento curiosidad por lenguas de todas las familias, indoeuropeas, semíticas o asiáticas. Me gusta explicar la ciencia al público. En resumen, soy un aficionado al conocimiento humano en todas sus formas.</p><div class="drawer" id="drawer-astro"><div class="drawer-in"><ul class="gallery"><li class="wide"><figure><button type="button" class="zoom" data-full="../assets/media/astro_andromeda.webp" data-cap="La galaxia de Andrómeda (M31) con sus galaxias satélite M32 y M110."><img src="../assets/media/astro_andromeda.webp" width="1672" height="876" loading="lazy" alt="La galaxia de Andrómeda (M31) con sus galaxias satélite M32 y M110."></button><figcaption>La galaxia de Andrómeda (M31) con sus galaxias satélite M32 y M110.</figcaption></figure></li><li><figure><button type="button" class="zoom" data-full="../assets/media/astro_pleiades.webp" data-cap="Las Pléyades (M45) y la nebulosa de reflexión azul alrededor de sus estrellas más brillantes."><img src="../assets/media/astro_pleiades.webp" width="655" height="1005" loading="lazy" alt="Las Pléyades (M45) y la nebulosa de reflexión azul alrededor de sus estrellas más brillantes."></button><figcaption>Las Pléyades (M45) y la nebulosa de reflexión azul alrededor de sus estrellas más brillantes.</figcaption></figure></li><li><figure><button type="button" class="zoom" data-full="../assets/media/astro_orion.webp" data-cap="La nebulosa de Orión (M42), con la nebulosa del Hombre Corriendo (NGC 1977) encima."><img src="../assets/media/astro_orion.webp" width="1354" height="1600" loading="lazy" alt="La nebulosa de Orión (M42), con la nebulosa del Hombre Corriendo (NGC 1977) encima."></button><figcaption>La nebulosa de Orión (M42), con la nebulosa del Hombre Corriendo (NGC 1977) encima.</figcaption></figure></li><li><figure><button type="button" class="zoom" data-full="../assets/media/astro_moon.webp" data-cap="La Luna, 25 de septiembre de 2026."><img src="../assets/media/astro_moon.webp" width="1200" height="1200" loading="lazy" alt="La Luna, 25 de septiembre de 2026."></button><figcaption>La Luna, 25 de septiembre de 2026.</figcaption></figure></li><li><figure><button type="button" class="zoom" data-full="../assets/media/astro_sun.webp" data-cap="El Sol tras las ramas de un árbol, 25 de septiembre de 2026."><img src="../assets/media/astro_sun.webp" width="1200" height="1200" loading="lazy" alt="El Sol tras las ramas de un árbol, 25 de septiembre de 2026."></button><figcaption>El Sol tras las ramas de un árbol, 25 de septiembre de 2026.</figcaption></figure></li><li><figure><button type="button" class="zoom" data-full="../assets/media/astro_orion2.webp" data-cap="La nebulosa de Orión (M42), otra toma."><img src="../assets/media/astro_orion2.webp" width="860" height="924" loading="lazy" alt="La nebulosa de Orión (M42), otra toma."></button><figcaption>La nebulosa de Orión (M42), otra toma.</figcaption></figure></li></ul></div></div></div>
     </div>
     <div>
       <h2>Trayectoria</h2>
@@ -297,6 +332,14 @@
 }">Copiar BibTeX</button></p></li><li data-status="submitted" data-first="false"><p class="p-title" lang="en">Evidence of linear mode conversion of Langmuir/<span class="m">𝒵</span>-mode waves to electromagnetic waves in the solar wind</p><p class="p-auth">Krafft, C., <strong class="me">Polanco-Rodríguez, F. J.</strong>, Savoini, P.</p><p class="p-venue"><i>Astrophys. J. Lett.</i> (2026) <span class="status">Enviado</span></p></li><li data-status="review" data-first="false"><p class="p-title" lang="en">Beam–plasma interactions and the generation of Type III radio bursts</p><p class="p-auth">Krasnoselskikh, V., Krafft, C., et al. (15 authors)</p><p class="p-venue"><i>Space Sci. Rev.</i> (2026) <span class="status">Revisión, por enviar</span></p></li></ol>
     <ul class="profiles"><li><a href="https://orcid.org/0009-0005-2951-697X" rel="noopener">ORCID</a></li><li><a href="https://scholar.google.com/citations?user=uOhYwswAAAAJ&amp;hl=en" rel="noopener">Google Scholar</a></li><li><a href="https://www.researchgate.net/profile/Francisco-Polanco-Rodriguez" rel="noopener">ResearchGate</a></li><li><a href="https://theses.hal.science/tel-05825580" rel="noopener">HAL</a></li></ul>
   </div>
+</dialog>
+
+<dialog id="lightbox" class="lightbox" aria-label="Sobre mí">
+  <button class="close" type="button" data-close aria-label="Cerrar">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+  </button>
+  <img alt="">
+  <p></p>
 </dialog>
 
 <script type="application/json" id="i18n">{"copied": "Copiado", "copy_bib": "Copiar BibTeX", "anim_pause": "Pausar la animación", "anim_play": "Reproducir la animación", "earth": "Tierra"}</script>
