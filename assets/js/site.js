@@ -19,6 +19,7 @@
     const STATIC_T = 9.5;    // frame shown when motion is reduced
     let W = 0, H = 0, k = 1; // css size, scale factor vs 1200px reference
     let col = {};
+    let cR = 100;
     let lines = [], main = null, src = null, earth = null, sats = [], wells = [];
     const fluct = document.createElement('canvas'), fctx = fluct.getContext('2d');
     let st = null, t = 0, cycle = 0;
@@ -84,6 +85,8 @@
       };
       lines.push(mk(-1.2, -.1, .1), mk(-.85, -.04, .04), mk(-.5, .1, -.04), mk(-.2, .24, -.14));
       main = lines[1];
+      // radio fronts travel ~2x the mean beam speed (beam: .072-.122 of the line length per second)
+      cR = main.total * .2;
       const c = at(main, .64);
       src = { x: c.x, y: c.y + H * .04, rx: Math.max(78, W * .14), ry: Math.max(50, H * .24), ang: Math.atan2(c.ty, c.tx) * .5, sun };
       const Re = Math.max(16, Math.min(34, H * .1));
@@ -141,7 +144,7 @@
       }
       // radio fronts emitted from all along the path; wavelength grows outward (lower plasma frequency)
       const fronts = [];
-      const nf = W < 640 ? 9 : 13;
+      const nf = W < 640 ? 12 : 18;
       for (let i = 0; i < nf; i++) {
         const s = .08 + (i + R()) / nf * .9, p = at(main, s);
         const x0 = p.x + p.nx * gauss(R) * 8 * k, y0 = p.y + p.ny * gauss(R) * 8 * k;
@@ -149,7 +152,7 @@
         const dir = r < .5 ? toE + gauss(R) * .12 : -Math.PI / 2 + gauss(R) * .7;
         const dist = Math.hypot(earth.x - x0, earth.y - y0) - earth.R;
         const tb = 1.8 + s / .1 + R() * .6;
-        fronts.push({ x0, y0, tb, dir, lam: (7 + s * 14) * k, trc: r < .5 ? tb + dist / (85 * k) : Infinity });
+        fronts.push({ x0, y0, tb, dir, lam: (7 + s * 14) * k, trc: r < .5 ? tb + dist / cR : Infinity });
       }
       const stars = [];
       for (let i = 0; i < 70; i++) stars.push({ x: R() * W, y: R() * H * .9, r: .4 + R() * .9, a: .25 + R() * .5, w: R() * 6.28 });
@@ -315,7 +318,7 @@
       for (const f of st.fronts) {
         const age = t - f.tb; if (age < 0) continue;
         for (let j = 0; j < 3; j++) {
-          const r = age * 85 * k - j * f.lam; if (r <= 4 || r > rmax) continue;
+          const r = age * cR - j * f.lam; if (r <= 4 || r > rmax) continue;
           const a = (1 - r / rmax) * g * (1 - j * .25);
           ctx.strokeStyle = rgba(col.radio, .9 * a); ctx.lineWidth = 1.6;
           ctx.beginPath(); ctx.arc(f.x0, f.y0, r, f.dir - .42, f.dir + .42); ctx.stroke();
