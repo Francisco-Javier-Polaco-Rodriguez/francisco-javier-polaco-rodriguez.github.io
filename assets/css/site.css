@@ -191,7 +191,13 @@ sub, sup { line-height: 0; }
 
 /* ---------- key figures ---------- */
 .stats { padding: clamp(28px, 4vw, 52px) 0 clamp(36px, 5vw, 64px); }
-.stat-row { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 28px 28px; }
+.stat-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 4fr); gap: 32px 56px; }
+.stat-group.problem { position: relative; }
+.stat-group.problem::after { content: ""; position: absolute; right: -28px; top: 4px; bottom: 0; width: 1px; background: var(--line); }
+.stat-h { font: 600 15px/1.2 var(--sans); color: var(--ink-2); margin: 0 0 16px; }
+.stat-group.problem .stat-h { color: var(--accent); }
+.stat-row { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px 28px; }
+.stat-group.problem .stat-row { grid-template-columns: 1fr; }
 .stat-row li { border-top: 2px solid var(--c); padding-top: 16px; position: relative; }
 .stat-row li::before { content: ""; position: absolute; left: 0; top: -2px; width: 100%; height: 40px; pointer-events: none;
   background: linear-gradient(to bottom, color-mix(in srgb, var(--c) 18%, transparent), transparent); }
@@ -199,8 +205,8 @@ sub, sup { line-height: 0; }
 .num .unit { font-size: .46em; font-weight: 600; letter-spacing: -.01em; color: var(--c); margin-left: .12em; }
 .num .unit sup { font-size: 1em; vertical-align: baseline; }
 .lbl { font-size: 14.5px; line-height: 1.45; color: var(--ink-2); margin: 0; max-width: 24ch; }
-@media (max-width: 980px) { .stat-row { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 560px) { .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 18px; } }
+@media (max-width: 980px) { .stat-wrap { grid-template-columns: 1fr; } .stat-group.problem::after { display: none; } .stat-group.problem .lbl { max-width: 40ch; } }
+@media (max-width: 760px) { .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 18px; } }
 
 /* ---------- sections ---------- */
 .block { position: relative; padding: clamp(56px, 8vw, 104px) 0; border-top: 1px solid color-mix(in srgb, var(--line) 80%, transparent); overflow: clip; }

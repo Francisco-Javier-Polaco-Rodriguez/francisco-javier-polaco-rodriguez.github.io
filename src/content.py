@@ -105,7 +105,7 @@ T['en'] = dict(
     anim_pause='Pause animation', anim_play='Play animation',
 
     earth='Earth',
-    stats_label='Key figures',
+    stats_label='Key figures', stats_problem='The open problem', stats_results='Highlights of my work',
     stats=[
         ('', 70, '+', 'years of research, and how these bursts make their radio waves is still debated', 'accent'),
         ('≈', 10, '%', f'of the energy radiated at {WP} escapes the radio source', 'radio'),
@@ -113,7 +113,7 @@ T['en'] = dict(
         ('', 45, ' billion', 'particles in a single simulation', 'beam'),
         ('', 30, ' M', 'CPU hours on national supercomputers', 'langmuir'),
     ],
-    dyn_h='Seen from Earth',
+    dyn_h='Seen by a remote observer',
     dyn_text='As the beam moves outward into thinner plasma, the radio emission drifts to lower frequencies.',
     dyn_freq='Frequency', dyn_time='Time',
     bar_trapped=f'{Z} mode, trapped in the source', bar_escapes='escapes',
@@ -251,7 +251,7 @@ T['fr'] = dict(
     anim_pause='Mettre l’animation en pause', anim_play='Lancer l’animation',
 
     earth='Terre',
-    stats_label='Chiffres clés',
+    stats_label='Chiffres clés', stats_problem='Le problème ouvert', stats_results='Points marquants de mon travail',
     stats=[
         ('', 70, '+', 'ans de recherche, et l’origine de l’émission radio de ces sursauts reste débattue', 'accent'),
         ('≈', 10, ' %', f'de l’énergie rayonnée à {WP} s’échappe de la source radio', 'radio'),
@@ -259,7 +259,7 @@ T['fr'] = dict(
         ('', 45, ' milliards', 'de particules dans une seule simulation', 'beam'),
         ('', 30, ' M', 'd’heures CPU sur les supercalculateurs nationaux', 'langmuir'),
     ],
-    dyn_h='Vu depuis la Terre',
+    dyn_h='Vu par un observateur distant',
     dyn_text='À mesure que le faisceau s’éloigne dans un plasma moins dense, l’émission radio dérive vers les basses fréquences.',
     dyn_freq='Fréquence', dyn_time='Temps',
     bar_trapped=f'mode {Z}, piégé dans la source', bar_escapes='s’échappe',
@@ -397,7 +397,7 @@ T['es'] = dict(
     anim_pause='Pausar la animación', anim_play='Reproducir la animación',
 
     earth='Tierra',
-    stats_label='Cifras clave',
+    stats_label='Cifras clave', stats_problem='El problema abierto', stats_results='Lo más destacado de mi trabajo',
     stats=[
         ('', 70, '+', 'años de investigación, y el origen de la emisión de radio de estos estallidos sigue en debate', 'accent'),
         ('≈', 10, ' %', f'de la energía radiada a {WP} escapa de la fuente de radio', 'radio'),
@@ -405,7 +405,7 @@ T['es'] = dict(
         ('', 45, ' mil millones', 'de partículas en una sola simulación', 'beam'),
         ('', 30, ' M', 'de horas de CPU en supercomputadores nacionales', 'langmuir'),
     ],
-    dyn_h='Visto desde la Tierra',
+    dyn_h='Visto por un observador remoto',
     dyn_text='A medida que el haz se aleja hacia un plasma menos denso, la emisión de radio deriva hacia frecuencias más bajas.',
     dyn_freq='Frecuencia', dyn_time='Tiempo',
     bar_trapped=f'modo {Z}, atrapado en la fuente', bar_escapes='escapa',

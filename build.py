@@ -205,6 +205,15 @@ def result_extra(kind, t):
             '<p class="e-lbl"><span><b>≈90%%</b> %s</span><span><b>≈10%%</b> %s</span></p></div>' % (t['bar_trapped'], t['bar_escapes']))
 
 
+def stats_html(t):
+    """First figure is the open problem; the rest are highlights of the work."""
+    li = ['<li style="--c: var(--%s)" data-in><p class="num">%s<span data-count="%d">%d</span><span class="unit">%s</span></p>'
+          '<p class="lbl">%s</p></li>' % (c, pre, n, n, suf, lbl) for pre, n, suf, lbl, c in t['stats']]
+    return ('<div class="stat-group problem"><p class="stat-h">%s</p><ul class="stat-row">%s</ul></div>'
+            '<div class="stat-group"><p class="stat-h">%s</p><ul class="stat-row">%s</ul></div>' % (
+                t['stats_problem'], li[0], t['stats_results'], ''.join(li[1:])))
+
+
 def render(lang):
     t = dict(C.T[lang])
     root = rel_root(lang)
@@ -226,9 +235,7 @@ def render(lang):
             t['jury_roles'].get(r + '_' + g, t['jury_roles'][r]), n, a) for r, g, n, a in C.JURY),
         honors_html=''.join('<div><dt>%s</dt><dd>%s</dd></div>' % r for r in t['honors']),
         teaching_html=''.join('<div><dt>%s</dt><dd><strong>%s</strong> %s</dd></div>' % r for r in t['teaching']),
-        stats_html=''.join(
-            '<li style="--c: var(--%s)" data-in><p class="num">%s<span data-count="%d">%d</span><span class="unit">%s</span></p>'
-            '<p class="lbl">%s</p></li>' % (c, pre, n, n, suf, lbl) for pre, n, suf, lbl, c in t['stats']),
+        stats_html=stats_html(t),
         compute_html=''.join('<li><b>%s</b><span>%s</span></li>' % c for c in t['compute']),
         talks_html=talks_html(t),
         recent_talks_html=recent_talks_html(),

@@ -331,6 +331,44 @@
       gr.addColorStop(0, '#FFF1C4'); gr.addColorStop(.35, '#FFC566'); gr.addColorStop(.8, col.accent); gr.addColorStop(1, '#E2571C');
       ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(sx, sy, R, 0, 6.2832); ctx.fill();
       ctx.strokeStyle = rgba('#FFE2A8', .35); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(sx, sy, R, 0, 6.2832); ctx.stroke();
+
+      // stress of the active region: high before the flare, released by it, slowly rebuilt before the next cycle
+      const stress = Math.min(1, (t < .5 ? 1 : Math.exp(-(t - .5) / 1.6)) + smooth(T - 5, T, t));
+      const AR = -.85;   // angle of the active region = foot of the beam's field line
+      // sunspots (umbra + penumbra), foreshortened towards the limb
+      const spot = (rf, ang, size) => {
+        const x = sx + Math.cos(ang) * R * rf, y = sy + Math.sin(ang) * R * rf, a = R * size, b = a * Math.sqrt(1 - rf * rf);
+        ctx.save(); ctx.translate(x, y); ctx.rotate(ang);
+        ctx.fillStyle = 'rgba(150,62,12,.5)'; ctx.beginPath(); ctx.ellipse(0, 0, b * 1.7, a * 1.7, 0, 0, 6.2832); ctx.fill();
+        ctx.fillStyle = 'rgba(70,24,6,.78)'; ctx.beginPath(); ctx.ellipse(0, 0, b, a, 0, 0, 6.2832); ctx.fill();
+        ctx.restore();
+      };
+      spot(.8, AR - .13, .034); spot(.84, AR + .1, .026); spot(.5, .35, .04); spot(.62, .52, .022); spot(.42, -.25, .02);
+
+      ctx.globalCompositeOperation = 'lighter';
+      // active region: bright patch on the disk that fades as the stored energy is released
+      const ax = sx + Math.cos(AR) * R * .86, ay = sy + Math.sin(AR) * R * .86;
+      gr = ctx.createRadialGradient(ax, ay, 0, ax, ay, R * .42);
+      gr.addColorStop(0, rgba('#FFF4D6', .2 + .5 * stress)); gr.addColorStop(1, rgba('#FFF4D6', 0));
+      ctx.save(); ctx.beginPath(); ctx.arc(sx, sy, R, 0, 6.2832); ctx.clip();
+      ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(ax, ay, R * .42, 0, 6.2832); ctx.fill(); ctx.restore();
+      // coronal loops: tall and sheared while stressed, low and symmetric once relaxed
+      const loop = (c, half, hgt, shear, alpha) => {
+        const a1 = c - half, a2 = c + half, am = c + shear, rr = R * (1 + hgt);
+        const x1 = sx + Math.cos(a1) * R, y1 = sy + Math.sin(a1) * R, x2 = sx + Math.cos(a2) * R, y2 = sy + Math.sin(a2) * R;
+        const px = sx + Math.cos(am) * rr, py = sy + Math.sin(am) * rr;   // apex
+        ctx.beginPath(); ctx.moveTo(x1, y1);
+        ctx.quadraticCurveTo(2 * px - (x1 + x2) / 2, 2 * py - (y1 + y2) / 2, x2, y2);
+        ctx.strokeStyle = rgba(col.accent, alpha * .3); ctx.lineWidth = 5; ctx.stroke();
+        ctx.strokeStyle = rgba('#FFE2A8', alpha); ctx.lineWidth = 1.3; ctx.stroke();
+      };
+      for (let i = 0; i < 4; i++) {
+        const half = .07 + i * .045, wob = .012 * Math.sin(t * 1.3 + i * 2.1) * stress;
+        loop(AR, half, (.07 + i * .05) * (1 + 1.3 * stress) + wob, (.05 + i * .04) * stress, (.5 + .4 * stress) * (1 - i * .15));
+      }
+      // a quiet loop system elsewhere on the limb
+      for (let i = 0; i < 3; i++) loop(.28, .05 + i * .035, .05 + i * .04 + .006 * Math.sin(t * .7 + i), 0, .4 - i * .08);
+      ctx.globalCompositeOperation = 'source-over';
     }
 
     function draw() {
@@ -545,7 +583,7 @@
     '.block h2', '.block .intro', '.block > .wrap > .small', '.thesis-title', '#thesis .meta',
     '.block .prose > p', '.spectro figcaption', '.interests > li', '.results > .result',
     '.thesis-side', '.sim figcaption', '.sel > li', '.rows > div', '.tl.recent > li',
-    '.path > li', '.talks', '.contact .mail', '.contact .profiles', '.sub-h', '.obs-text', '.stat-row > li',
+    '.path > li', '.talks', '.contact .mail', '.contact .profiles', '.sub-h', '.obs-text', '.stat-row > li', '.stat-h',
   ];
   const RV_FIG = ['.spectro img', '.scheme', '.defense', '.sim-one video', '.pair > div', '.obs-fig', '.obs-pair > div'];
   const main = document.getElementById('main');
