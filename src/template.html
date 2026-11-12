@@ -6,8 +6,8 @@
 <title>{{meta_title}}</title>
 <meta name="description" content="{{meta_desc}}">
 <meta name="author" content="Francisco Javier Polanco-Rodríguez">
-<meta name="theme-color" content="#F6F8FB" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0A1626" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#060A13">
+<meta name="color-scheme" content="dark">
 <meta property="og:title" content="{{meta_title}}">
 <meta property="og:description" content="{{meta_desc}}">
 <meta property="og:type" content="profile">
@@ -17,7 +17,7 @@
 <link rel="icon" href="{{root}}assets/media/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
 <link rel="stylesheet" href="{{root}}assets/css/site.css">
 <script type="application/ld+json">{{jsonld}}</script>
 </head>
@@ -47,37 +47,57 @@
 <main id="main">
 
 <section class="hero" aria-labelledby="name">
-  <div class="wrap hero-text">
-    <p class="role">{{hero_role}}</p>
-    <h1 id="name">Francisco Javier <span>Polanco-Rodríguez</span></h1>
-    <p class="lead">{{hero_lead}}</p>
-    <p class="sub">{{hero_sub}}</p>
-    <div class="actions">
-      <a class="btn primary" href="#publications" data-open-pubs>{{btn_pubs}} <span class="count">{{pub_count}}</span></a>
-      <a class="btn" href="{{root}}assets/cv/CV_Polanco-Rodriguez.pdf" download>{{btn_cv}}</a>
-      <a class="btn quiet" href="#contact">{{btn_contact}}</a>
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <p class="role">{{hero_role}}</p>
+      <h1 id="name">Francisco Javier <span>Polanco-Rodríguez</span></h1>
+      <p class="lead">{{hero_lead}}</p>
+      <p class="sub">{{hero_sub}}</p>
+      <div class="actions">
+        <a class="btn primary" href="#publications" data-open-pubs>{{btn_pubs}} <span class="count">{{pub_count}}</span></a>
+        <a class="btn" href="{{root}}assets/cv/CV_Polanco-Rodriguez.pdf" download>{{btn_cv}}</a>
+        <a class="btn quiet" href="#contact">{{btn_contact}}</a>
+      </div>
+      {{profiles}}
     </div>
-    {{profiles}}
+    <aside class="dyn" aria-labelledby="dyn-h">
+      <p class="dyn-h" id="dyn-h">{{dyn_h}}</p>
+      <div class="dyn-plot">
+        <canvas id="dynspec" role="img" aria-label="{{dyn_text}}"></canvas>
+        <span class="tick" style="top: 16.5%">10 MHz</span>
+        <span class="tick" style="top: 71.3%">1 MHz</span>
+      </div>
+      <p class="dyn-axes"><span>{{dyn_freq}}</span><span>{{dyn_time}}</span></p>
+      <p class="dyn-text">{{dyn_text}}</p>
+    </aside>
   </div>
 
   <figure class="burst" aria-labelledby="burst-title">
-    <p class="wrap burst-title" id="burst-title">{{anim_title}}</p>
     <canvas id="burst" role="img" aria-label="{{anim_label}}"></canvas>
     <button class="burst-toggle" type="button" aria-pressed="false" aria-label="{{anim_pause}}">
       <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="2.6" height="10" rx="1"/><rect x="9.4" y="3" width="2.6" height="10" rx="1"/></svg>
       <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6c0 .5.5.8.9.5l7.3-4.8a.6.6 0 0 0 0-1L5.9 2.7c-.4-.3-.9 0-.9.5Z"/></svg>
     </button>
     <figcaption class="wrap burst-cap">
-      <ul class="legend">
-        <li style="--c: var(--accent)"><span>{{legend_flare}}</span></li>
-        <li style="--c: var(--beam)"><span>{{legend_beam}}</span></li>
-        <li style="--c: var(--langmuir)"><span>{{legend_langmuir}}</span></li>
-        <li style="--c: var(--radio)"><span>{{legend_radio}}</span></li>
-        <li class="fl"><span>{{legend_fluct}}</span></li>
-      </ul>
+      <div>
+        <p class="burst-title" id="burst-title">{{anim_title}}</p>
+        <ul class="legend">
+          <li style="--c: var(--accent)"><span>{{legend_flare}}</span></li>
+          <li style="--c: var(--beam)"><span>{{legend_beam}}</span></li>
+          <li style="--c: var(--langmuir)"><span>{{legend_langmuir}}</span></li>
+          <li style="--c: var(--radio)"><span>{{legend_radio}}</span></li>
+          <li class="fl"><span>{{legend_fluct}}</span></li>
+        </ul>
+      </div>
       <p>{{anim_caption}}</p>
     </figcaption>
   </figure>
+</section>
+
+<section class="stats" aria-label="{{stats_label}}">
+  <div class="wrap">
+    <ul class="stat-row">{{stats_html}}</ul>
+  </div>
 </section>
 
 <section id="research" class="block" aria-labelledby="research-h">
@@ -121,6 +141,7 @@
         <h3 class="sub-h">{{jury_h}}</h3>
         <dl class="jury">{{jury_html}}</dl>
         <h3 class="sub-h">{{compute_h}}</h3>
+        <ul class="tiles">{{compute_html}}</ul>
         <p class="small">{{compute_text}}</p>
       </div>
     </div>

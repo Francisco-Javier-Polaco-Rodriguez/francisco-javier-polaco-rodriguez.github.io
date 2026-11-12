@@ -189,6 +189,22 @@ def about_html(t, root):
     return ''.join(out)
 
 
+def wave_svg(kind):
+    """Small travelling wave drawn in the colour of the wave species a result is about."""
+    import math
+    n = {'z': 3, 'radio': 5, 'langmuir': 9, 'beam': 2}[kind]
+    period = 120 / n
+    pts = ' '.join('%.1f,%.2f' % (x / 2, 10 - 6.5 * math.sin(2 * math.pi * (x / 2) / period)) for x in range(0, 2 * (240 + 1)))
+    return ('<svg class="wv" viewBox="0 0 120 20" aria-hidden="true" style="--p: -%.2fpx"><polyline points="%s"/></svg>' % (period, pts))
+
+
+def result_extra(kind, t):
+    if kind != 'radio':
+        return ''
+    return ('<div class="ebar" data-in><div class="e-track"><span class="e-z"></span><span class="e-o"></span></div>'
+            '<p class="e-lbl"><span><b>≈90%%</b> %s</span><span><b>≈10%%</b> %s</span></p></div>' % (t['bar_trapped'], t['bar_escapes']))
+
+
 def render(lang):
     t = dict(C.T[lang])
     root = rel_root(lang)
@@ -203,13 +219,17 @@ def render(lang):
         interests_html=''.join('<li><h3>%s</h3><p>%s</p></li>' % (a, b) for a, b in t['interests']),
         thesis_summary_html=''.join('<p>%s</p>' % p for p in t['thesis_summary']),
         results_html=''.join(
-            '<article class="result" style="--c: var(--%s)"><h4>%s</h4><p>%s</p><p class="refs">%s</p></article>' % (
-                kind, h, p, ' '.join(ref_label(k) for k in refs))
+            '<article class="result" style="--c: var(--%s)">%s<h4>%s</h4><p>%s</p>%s<p class="refs">%s</p></article>' % (
+                kind, wave_svg(kind), h, p, result_extra(kind, t), ' '.join(ref_label(k) for k in refs))
             for kind, h, p, refs in t['results']),
         jury_html=''.join('<div><dt>%s</dt><dd>%s <span>%s</span></dd></div>' % (
             t['jury_roles'].get(r + '_' + g, t['jury_roles'][r]), n, a) for r, g, n, a in C.JURY),
         honors_html=''.join('<div><dt>%s</dt><dd>%s</dd></div>' % r for r in t['honors']),
         teaching_html=''.join('<div><dt>%s</dt><dd><strong>%s</strong> %s</dd></div>' % r for r in t['teaching']),
+        stats_html=''.join(
+            '<li style="--c: var(--%s)" data-in><p class="num">%s<span data-count="%d">%d</span><span class="unit">%s</span></p>'
+            '<p class="lbl">%s</p></li>' % (c, pre, n, n, suf, lbl) for pre, n, suf, lbl, c in t['stats']),
+        compute_html=''.join('<li><b>%s</b><span>%s</span></li>' % c for c in t['compute']),
         talks_html=talks_html(t),
         recent_talks_html=recent_talks_html(),
         selected_html=selected_html(),
@@ -228,7 +248,7 @@ def render(lang):
         }, ensure_ascii=False),
     )
     v['hero_role'] = t['hero_role'].replace(' · ', '<br>')
-    for k in ('meta_title', 'meta_desc', 'anim_label', 'anim_pause', 'spec_alt', 'obs1_alt', 'obs_solo_alt', 'obs_sim_alt'):
+    for k in ('meta_title', 'meta_desc', 'anim_label', 'anim_pause', 'spec_alt', 'dyn_text', 'stats_label', 'obs1_alt', 'obs_solo_alt', 'obs_sim_alt'):
         v[k] = esc(strip_tags(t[k]))
 
     tpl = (ROOT / 'src' / 'template.html').read_text(encoding='utf-8')

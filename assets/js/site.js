@@ -3,7 +3,6 @@
   document.documentElement.classList.add('js');
   const S = JSON.parse(document.getElementById('i18n').textContent);
   const reduceMQ = matchMedia('(prefers-reduced-motion: reduce)');
-  const darkMQ = matchMedia('(prefers-color-scheme: dark)');
 
   /* ================================================================
      Type III burst animation.
@@ -15,14 +14,18 @@
   if (cv) {
     const ctx = cv.getContext('2d');
     const btn = document.querySelector('.burst-toggle');
+    const dyn = document.getElementById('dynspec'), dctx = dyn && dyn.getContext('2d');
     const T = 17;            // cycle length [s]
     const STATIC_T = 9.5;    // frame shown when motion is reduced
     const PACE = .6;         // animation seconds per real second: slows the whole scene
-    let W = 0, H = 0, k = 1; // css size, scale factor vs 1200px reference
+    const TOP = .3;          // the scene sits in the lower 70% of the canvas; the top fades under the hero text
+    let W = 0, H = 0, Y0 = 0, HB = 0, k = 1; // css size, scene band (top, height), scale vs 1200px reference
     let col = {};
     let cR = 100;
     let lines = [], main = null, src = null, earth = null, sats = [], wells = [];
     const fluct = document.createElement('canvas'), fctx = fluct.getContext('2d');
+    const dynNoise = document.createElement('canvas'), dynBurst = document.createElement('canvas');
+    let sprite = null;
     let st = null, t = 0, cycle = 0;
     let playing = !reduceMQ.matches, onScreen = true, last = 0, raf = 0;
 
@@ -34,7 +37,6 @@
       const cs = getComputedStyle(document.documentElement);
       for (const n of ['bg', 'ink', 'ink-2', 'line', 'accent', 'beam', 'langmuir', 'z', 'radio'])
         col[n] = cs.getPropertyValue('--' + n).trim();
-      col.dark = darkMQ.matches && document.documentElement.dataset.theme !== 'light';
     }
     function rng(seed) {
       return () => {
@@ -46,6 +48,7 @@
     }
     const gauss = (R) => { let u = 0, v = 0; while (!u) u = R(); v = R(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(6.2832 * v); };
     const smooth = (a, b, x) => { const y = Math.min(1, Math.max(0, (x - a) / (b - a))); return y * y * (3 - 2 * y); };
+    const Y = (f) => Y0 + f * HB;
 
     // ---------- geometry: cubic Bézier field lines with arc-length lookup
     function curve(p0, p1, p2, p3) {
@@ -70,36 +73,48 @@
       return { x: a[0] + f * (b[0] - a[0]), y: a[1] + f * (b[1] - a[1]), tx, ty, nx: -ty, ny: tx };
     }
 
+    // soft round sprite for additive glow (beam electrons)
+    function makeSprite(color, r) {
+      const c = document.createElement('canvas'), d = Math.ceil(r * 2);
+      c.width = c.height = d;
+      const x = c.getContext('2d'), g = x.createRadialGradient(r, r, 0, r, r, r);
+      g.addColorStop(0, 'rgba(255,255,255,.95)'); g.addColorStop(.18, rgba(color, .9)); g.addColorStop(.5, rgba(color, .22)); g.addColorStop(1, rgba(color, 0));
+      x.fillStyle = g; x.fillRect(0, 0, d, d);
+      return { c, r };
+    }
+
     function layout() {
       const r = cv.getBoundingClientRect();
-      W = r.width; H = r.height; k = Math.max(.55, Math.min(1.25, W / 1200));
+      W = r.width; H = r.height; Y0 = H * TOP; HB = H - Y0; k = Math.max(.55, Math.min(1.25, W / 1200));
       const dpr = Math.min(2, devicePixelRatio || 1);
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const R = Math.min(H * .36, Math.max(56, W * .1));
-      const sun = { x: R * .15, y: H * .7, R };
+      const R = Math.min(HB * .31, Math.max(56, W * .1));
+      const sun = { x: R * .12, y: Y(.62), R };
       lines = [];
       const mk = (ang, dy, bend) => {
         const p0 = [sun.x + R * Math.cos(ang), sun.y + R * Math.sin(ang)];
-        return curve(p0, [p0[0] + W * .1, p0[1] - H * (.12 + bend)], [W * .48, H * (.42 + dy)], [W * 1.04, H * (.44 + dy)]);
+        return curve(p0, [p0[0] + W * .1, p0[1] - HB * (.12 + bend)], [W * .48, Y(.42 + dy)], [W * 1.04, Y(.44 + dy)]);
       };
       lines.push(mk(-1.2, -.1, .1), mk(-.85, -.04, .04), mk(-.5, .1, -.04), mk(-.2, .24, -.14));
       main = lines[1];
       // radio fronts travel ~1.75x the mean beam speed (beam: .072-.122 of the line length per second)
       cR = main.total * .17;
       const c = at(main, .64);
-      src = { x: c.x, y: c.y + H * .04, rx: Math.max(78, W * .14), ry: Math.max(50, H * .24), ang: Math.atan2(c.ty, c.tx) * .5, sun };
-      const Re = Math.max(16, Math.min(34, H * .1));
-      earth = W < 640 ? { x: W - Re - 10, y: Re + 10, R: Re * .85 } : { x: W - Math.max(46, W * .055), y: Math.max(Re + 16, H * .16), R: Re };
+      src = { x: c.x, y: c.y + HB * .04, ry: Math.max(50, HB * .24), sun };
+      const Re = Math.max(16, Math.min(34, HB * .1));
+      earth = W < 640 ? { x: W - Re - 10, y: Y0 + Re + 4, R: Re * .85 } : { x: W - Math.max(46, W * .055), y: Math.max(Y0 + Re + 16, Y(.16)), R: Re };
       const small = W < 640;
-      // both probes sit inside the radio source, on the beam path
+      // both probes sit on the beam path
       const so = at(main, .7), pp = at(main, .57);
       sats = [
         { name: small ? 'SolO' : 'Solar Orbiter', kind: 'solo', s: .7, x: so.x + so.nx * src.ry * .42, y: so.y + so.ny * src.ry * .42 },
         { name: small ? 'PSP' : 'Parker Solar Probe', kind: 'psp', s: .57, above: true, x: pp.x - pp.nx * src.ry * .3, y: pp.y - pp.ny * src.ry * .3 },
       ];
+      sprite = makeSprite(col.beam, 9 * Math.max(.8, k));
       drawFluct(dpr);
+      buildDyn();
       reset(cycle);
     }
 
@@ -114,15 +129,61 @@
       for (let i = 0; i < n; i++) {
         const x = R() * W, y = R() * H, r = (16 + R() * 40) * k;
         if (Math.hypot(x - sx, y - sy) < sr * 1.15) continue;
-        const sign = R() < .5 ? 1 : -1, a = .045 + R() * .06;
+        const sign = R() < .5 ? 1 : -1, a = (.045 + R() * .06) * (.35 + .65 * smooth(0, Y0, y));
         if (sign < 0) wells.push({ x, y, r });
         const c0 = sign > 0 ? col.z : col['ink-2'];
         const gr = fctx.createRadialGradient(x, y, 0, x, y, r);
-        gr.addColorStop(0, rgba(c0, a * (col.dark ? 1.8 : 1))); gr.addColorStop(1, rgba(c0, 0));
+        gr.addColorStop(0, rgba(c0, a * 1.9)); gr.addColorStop(1, rgba(c0, 0));
         fctx.fillStyle = gr; fctx.beginPath(); fctx.arc(x, y, r, 0, 6.2832); fctx.fill();
       }
     }
     const nearWell = (x, y) => wells.some((w) => Math.hypot(w.x - x, w.y - y) < w.r * .8);
+
+    // ---------- live dynamic spectrum: what a radio telescope records during the cycle.
+    // Frequency (log, 20 -> 0.3 MHz) against time; the burst drifts as f ~ 1/distance.
+    const DW = 240, DH = 120, FSPAN = Math.log10(20 / .3);
+    function buildDyn() {
+      if (!dyn) return;
+      const r = dyn.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
+      dyn.width = Math.round(r.width * dpr); dyn.height = Math.round(r.height * dpr);
+      const stops = [[0, 7, 12, 26], [.22, 44, 28, 104], [.48, 176, 44, 100], [.74, 255, 138, 61], [1, 255, 244, 214]];
+      const cmap = (v) => {
+        v = Math.min(1, Math.max(0, v));
+        let i = 0; while (i < stops.length - 2 && v > stops[i + 1][0]) i++;
+        const a = stops[i], b = stops[i + 1], f = (v - a[0]) / (b[0] - a[0]);
+        return [a[1] + f * (b[1] - a[1]), a[2] + f * (b[2] - a[2]), a[3] + f * (b[3] - a[3])];
+      };
+      const R = rng(77);
+      for (const [cvs, withBurst] of [[dynNoise, false], [dynBurst, true]]) {
+        cvs.width = DW; cvs.height = DH;
+        const x2 = cvs.getContext('2d'), img = x2.createImageData(DW, DH);
+        for (let y = 0; y < DH; y++) {
+          const f = 20 * Math.pow(10, -(y / DH) * FSPAN), s = .5 / f;      // MHz, position along the path
+          const t0 = 2.1 + s / .1, tau = .3 + 1.3 * s, rise = .14 + .25 * s;
+          const band = .03 * Math.sin(y * .9) + (y % 23 === 0 ? .06 : 0);
+          for (let x = 0; x < DW; x++) {
+            let v = .07 + .07 * R() + band;
+            if (withBurst && s > .03 && s < 1.08) {
+              const dt = x / DW * T - t0;
+              const I = dt < 0 ? Math.exp(-(dt * dt) / (rise * rise)) : Math.exp(-dt / tau);
+              v += I * (.8 + .2 * R()) * smooth(.03, .07, s) * (1 - .35 * smooth(.6, 1.08, s));
+            }
+            const c = cmap(v), o = 4 * (y * DW + x);
+            img.data[o] = c[0]; img.data[o + 1] = c[1]; img.data[o + 2] = c[2]; img.data[o + 3] = 255;
+          }
+        }
+        x2.putImageData(img, 0, 0);
+      }
+    }
+    function drawDyn() {
+      if (!dyn) return;
+      const w = dyn.width, h = dyn.height, x = Math.min(1, t / T) * w;
+      dctx.imageSmoothingEnabled = true;
+      dctx.drawImage(dynNoise, 0, 0, w, h);
+      dctx.save(); dctx.beginPath(); dctx.rect(0, 0, x, h); dctx.clip();
+      dctx.drawImage(dynBurst, 0, 0, w, h); dctx.restore();
+      dctx.fillStyle = 'rgba(255,255,255,.55)'; dctx.fillRect(x - 1, 0, Math.max(1, w / 400), h);
+    }
 
     // ---------- per-cycle state (seeded so every cycle differs but is reproducible)
     function reset(n) {
@@ -156,7 +217,7 @@
         fronts.push({ x0, y0, tb, dir, lam: (7 + s * 14) * k, trc: r < .5 ? tb + dist / cR : Infinity });
       }
       const stars = [];
-      for (let i = 0; i < 70; i++) stars.push({ x: R() * W, y: R() * H * .9, r: .4 + R() * .9, a: .25 + R() * .5, w: R() * 6.28 });
+      for (let i = 0; i < 110; i++) stars.push({ x: R() * W, y: R() * H * .95, r: .4 + R() * 1.1, a: .25 + R() * .6, w: R() * 6.28 });
       st = { beam, lang, fronts, stars };
     }
 
@@ -170,11 +231,13 @@
         const px = x + c * u * L - s * d, py = y + s * u * L + c * d;
         i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
       }
+      // wide faint pass + thin bright pass = glow without shadowBlur
+      ctx.strokeStyle = rgba(color, alpha * .22); ctx.lineWidth = lw * 3.6; ctx.stroke();
       ctx.strokeStyle = rgba(color, alpha); ctx.lineWidth = lw; ctx.stroke();
     }
 
     function label(txt, x, y) {
-      ctx.font = `500 ${Math.round(11.5 * Math.max(.9, k))}px "Instrument Sans", system-ui, sans-serif`;
+      ctx.font = `500 ${Math.round(11.5 * Math.max(.9, k))}px "Bricolage Grotesque", system-ui, sans-serif`;
       ctx.textAlign = 'center'; ctx.fillStyle = rgba(col['ink-2'], .95);
       ctx.fillText(txt, x, y); ctx.textAlign = 'start';
     }
@@ -188,35 +251,41 @@
         ctx.fillStyle = rgba(col.beam, .85);
         ctx.fillRect(-2.5 * u, -15 * u, 3.5 * u, 10 * u); ctx.fillRect(-2.5 * u, 5 * u, 3.5 * u, 10 * u);
         ctx.fillStyle = col.ink; ctx.fillRect(-4 * u, -3.5 * u, 7 * u, 7 * u);
-        ctx.fillStyle = col['ink-2']; ctx.fillRect(3.6 * u, -5 * u, 1.8 * u, 10 * u);
+        ctx.fillStyle = col.accent; ctx.fillRect(3.6 * u, -5 * u, 1.8 * u, 10 * u);
       } else {
         ctx.fillStyle = col.ink;
         ctx.beginPath(); ctx.moveTo(2 * u, -3 * u); ctx.lineTo(-9 * u, 0); ctx.lineTo(2 * u, 3 * u); ctx.closePath(); ctx.fill();
-        ctx.fillStyle = col['ink-2']; ctx.fillRect(3 * u, -6.5 * u, 2.2 * u, 13 * u);
+        ctx.fillStyle = col.accent; ctx.fillRect(3 * u, -6.5 * u, 2.2 * u, 13 * u);
       }
       ctx.restore();
       const a = t - (.6 + sat.s / .11);
-      if (a > 0 && a < 1.4) {
-        ctx.strokeStyle = rgba(col.beam, (1 - a / 1.4) * .8 * g); ctx.lineWidth = 1.2;
-        ctx.beginPath(); ctx.arc(sat.x, sat.y, (8 + a * 22) * k, 0, 6.2832); ctx.stroke();
+      if (a > 0 && a < 1.8) {
+        for (let j = 0; j < 2; j++) {
+          const b = a - j * .35; if (b <= 0) continue;
+          ctx.strokeStyle = rgba(col.beam, (1 - b / 1.8) * .8 * g); ctx.lineWidth = 1.3;
+          ctx.beginPath(); ctx.arc(sat.x, sat.y, (8 + b * 24) * k, 0, 6.2832); ctx.stroke();
+        }
       }
-      // PSP sits above the beam: put its label above so it does not cover the electrons
       label(sat.name, sat.x, sat.above ? sat.y - 16 * u : sat.y + 26 * u);
     }
 
     // Earth with radio telescopes pointed at the source; they glow when a front arrives.
     function drawEarth(g) {
       const { x, y, R: r } = earth, u = Math.max(.8, k);
-      let gr = ctx.createRadialGradient(x, y, r * .9, x, y, r * 1.6);
-      gr.addColorStop(0, rgba('#7FB2FF', col.dark ? .35 : .3)); gr.addColorStop(1, rgba('#7FB2FF', 0));
-      ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(x, y, r * 1.6, 0, 6.2832); ctx.fill();
+      let gr = ctx.createRadialGradient(x, y, r * .9, x, y, r * 2);
+      gr.addColorStop(0, rgba('#7FB2FF', .4)); gr.addColorStop(1, rgba('#7FB2FF', 0));
+      ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(x, y, r * 2, 0, 6.2832); ctx.fill();
       gr = ctx.createRadialGradient(x - r * .35, y - r * .35, r * .1, x, y, r);
-      gr.addColorStop(0, '#7DB4FA'); gr.addColorStop(1, '#1E4F9C');
+      gr.addColorStop(0, '#8DC0FF'); gr.addColorStop(1, '#173F86');
       ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.fill();
       ctx.save(); ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.clip();
       ctx.fillStyle = 'rgba(70,170,95,.75)';
       ctx.beginPath(); ctx.ellipse(x - r * .25, y + r * .15, r * .42, r * .26, .6, 0, 6.2832); ctx.fill();
       ctx.beginPath(); ctx.ellipse(x + r * .4, y - r * .35, r * .25, r * .16, -.4, 0, 6.2832); ctx.fill();
+      // night side, away from the Sun
+      const ns = ctx.createLinearGradient(x - r, y, x + r, y);
+      ns.addColorStop(.45, 'rgba(3,8,20,0)'); ns.addColorStop(1, 'rgba(3,8,20,.7)');
+      ctx.fillStyle = ns; ctx.fillRect(x - r, y - r, 2 * r, 2 * r);
       ctx.restore();
 
       let glow = 0;
@@ -227,9 +296,9 @@
         const a = toSrc + da, dx = Math.cos(a), dy = Math.sin(a);
         const bx = x + dx * r, by = y + dy * r, tx = bx + dx * 6 * u, ty = by + dy * 6 * u;
         if (glow > .02) {
-          const h = ctx.createRadialGradient(tx, ty, 0, tx, ty, 14 * u);
-          h.addColorStop(0, rgba(col.radio, .55 * glow)); h.addColorStop(1, rgba(col.radio, 0));
-          ctx.fillStyle = h; ctx.beginPath(); ctx.arc(tx, ty, 14 * u, 0, 6.2832); ctx.fill();
+          const h = ctx.createRadialGradient(tx, ty, 0, tx, ty, 16 * u);
+          h.addColorStop(0, rgba(col.radio, .65 * glow)); h.addColorStop(1, rgba(col.radio, 0));
+          ctx.fillStyle = h; ctx.beginPath(); ctx.arc(tx, ty, 16 * u, 0, 6.2832); ctx.fill();
         }
         ctx.strokeStyle = col.ink; ctx.lineWidth = 1.4;
         ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(tx, ty); ctx.stroke();
@@ -240,71 +309,99 @@
       label(S.earth, x, y + r + 16 * u);
     }
 
+    function drawSun(fl) {
+      const { x: sx, y: sy, R } = src.sun;
+      ctx.globalCompositeOperation = 'lighter';
+      // corona: wide halo plus slow streamers
+      let gr = ctx.createRadialGradient(sx, sy, R * .8, sx, sy, R * 3.4);
+      gr.addColorStop(0, rgba(col.accent, .42 + .2 * fl)); gr.addColorStop(.35, rgba(col.accent, .12)); gr.addColorStop(1, rgba(col.accent, 0));
+      ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(sx, sy, R * 3.4, 0, 6.2832); ctx.fill();
+      for (let i = 0; i < 12; i++) {
+        const a = -1.9 + i * .3 + .06 * Math.sin(t * .35 + i * 1.7), len = R * (2.3 + .6 * Math.sin(t * .5 + i * 2.3)), w = .2 + .05 * Math.sin(i * 5.1);
+        const x1 = sx + Math.cos(a) * len, y1 = sy + Math.sin(a) * len;
+        const sg = ctx.createLinearGradient(sx, sy, x1, y1);
+        sg.addColorStop(.4, rgba(col.accent, .075)); sg.addColorStop(1, rgba(col.accent, 0));
+        ctx.fillStyle = sg; ctx.beginPath();
+        ctx.moveTo(sx + Math.cos(a - w) * R * .96, sy + Math.sin(a - w) * R * .96);
+        ctx.lineTo(x1, y1); ctx.lineTo(sx + Math.cos(a + w) * R * .96, sy + Math.sin(a + w) * R * .96); ctx.closePath(); ctx.fill();
+      }
+      ctx.globalCompositeOperation = 'source-over';
+      // disk: hot centre, darker limb
+      gr = ctx.createRadialGradient(sx + R * .25, sy - R * .3, R * .05, sx, sy, R);
+      gr.addColorStop(0, '#FFF1C4'); gr.addColorStop(.35, '#FFC566'); gr.addColorStop(.8, col.accent); gr.addColorStop(1, '#E2571C');
+      ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(sx, sy, R, 0, 6.2832); ctx.fill();
+      ctx.strokeStyle = rgba('#FFE2A8', .35); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(sx, sy, R, 0, 6.2832); ctx.stroke();
+    }
+
     function draw() {
       ctx.clearRect(0, 0, W, H);
       const g = t < .4 ? t / .4 : t > T - 1.4 ? Math.max(0, (T - t) / 1.4) : 1;
+      const u = Math.max(.8, k);
 
-      if (col.dark) for (const s of st.stars) {
-        ctx.fillStyle = rgba('#FFFFFF', s.a * (.75 + .25 * Math.sin(t * .8 + s.w)));
+      for (const s of st.stars) {
+        ctx.fillStyle = rgba('#FFFFFF', s.a * (.7 + .3 * Math.sin(t * .8 + s.w)));
         ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.2832); ctx.fill();
       }
-
       ctx.drawImage(fluct, 0, 0, W, H);
 
-      // field lines
-      ctx.lineWidth = 1;
+      // field lines, fading away from the Sun; the beam's line is brighter
       lines.forEach((c, i) => {
-        ctx.strokeStyle = rgba(col['ink-2'], i === 1 ? .5 : .22);
+        const lg = ctx.createLinearGradient(0, 0, W, 0);
+        lg.addColorStop(0, rgba(col.accent, i === 1 ? .7 : .35)); lg.addColorStop(.25, rgba(col['ink-2'], i === 1 ? .55 : .26)); lg.addColorStop(1, rgba(col['ink-2'], i === 1 ? .3 : .12));
+        ctx.strokeStyle = lg; ctx.lineWidth = i === 1 ? 1.3 : 1;
         ctx.beginPath(); c.pts.forEach((p, j) => j ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke();
       });
       const lb = at(main, .2);
-      ctx.fillStyle = rgba(col['ink-2'], .8);
+      ctx.fillStyle = rgba(col['ink-2'], .85);
       ctx.font = `italic ${Math.round(14 * Math.max(.85, k))}px Newsreader, Georgia, serif`;
       ctx.fillText('B₀', lb.x + lb.nx * 14 - 6, lb.y + lb.ny * 14);
 
       // the radio source travels with the beam: a soft violet halo around the bulk of the electrons
       const sb = (t - 1.3) * .097;
       if (sb > .03 && sb < 1.05) {
-        const p = at(main, sb), rr = (40 + sb * 90) * k, a = Math.min(1, sb / .1) * Math.min(1, (1.05 - sb) / .1) * g;
+        const p = at(main, sb), rr = (46 + sb * 100) * k, a = Math.min(1, sb / .1) * Math.min(1, (1.05 - sb) / .1) * g;
         const gr = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, rr);
-        gr.addColorStop(0, rgba(col.z, .16 * a)); gr.addColorStop(1, rgba(col.z, 0));
+        gr.addColorStop(0, rgba(col.z, .22 * a)); gr.addColorStop(1, rgba(col.z, 0));
+        ctx.globalCompositeOperation = 'lighter';
         ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(p.x, p.y, rr, 0, 6.2832); ctx.fill();
+        ctx.globalCompositeOperation = 'source-over';
       }
 
       drawEarth(g);
       for (const sat of sats) drawSat(sat, g);
 
-      // Sun
-      const { x: sx, y: sy, R } = src.sun;
-      let gr = ctx.createRadialGradient(sx, sy, R * .9, sx, sy, R * 1.6);
-      gr.addColorStop(0, rgba(col.accent, col.dark ? .35 : .22)); gr.addColorStop(1, rgba(col.accent, 0));
-      ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(sx, sy, R * 1.6, 0, 6.2832); ctx.fill();
-      gr = ctx.createRadialGradient(sx + R * .2, sy - R * .25, R * .1, sx, sy, R);
-      gr.addColorStop(0, '#FFD98A'); gr.addColorStop(1, col.accent);
-      ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(sx, sy, R, 0, 6.2832); ctx.fill();
-
-      // flare at the foot of the main field line
       const fl = t < .5 ? t / .5 : Math.exp(-(t - .5) * 1.1);
+      drawSun(fl);
+
+      ctx.globalCompositeOperation = 'lighter';
+      // flare at the foot of the main field line: core, halo and four short rays
       if (fl > .01) {
-        const p = main.pts[0], rr = (14 + 46 * fl) * k;
-        gr = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], rr);
-        gr.addColorStop(0, rgba('#FFF4D6', .95 * fl)); gr.addColorStop(.35, rgba(col.accent, .7 * fl)); gr.addColorStop(1, rgba(col.accent, 0));
+        const p = main.pts[0], rr = (16 + 60 * fl) * k;
+        const gr = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], rr);
+        gr.addColorStop(0, rgba('#FFF4D6', .95 * fl)); gr.addColorStop(.3, rgba(col.accent, .7 * fl)); gr.addColorStop(1, rgba(col.accent, 0));
         ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(p[0], p[1], rr, 0, 6.2832); ctx.fill();
+        ctx.strokeStyle = rgba('#FFF4D6', .55 * fl); ctx.lineWidth = 1.2;
+        for (let i = 0; i < 4; i++) {
+          const a = .4 + i * 1.5708, l = rr * 1.5;
+          ctx.beginPath(); ctx.moveTo(p[0] + Math.cos(a) * 4, p[1] + Math.sin(a) * 4); ctx.lineTo(p[0] + Math.cos(a) * l, p[1] + Math.sin(a) * l); ctx.stroke();
+        }
       }
 
-      // beam electrons
-      ctx.fillStyle = col.beam;
-      ctx.strokeStyle = rgba(col.beam, .35 * g); ctx.lineWidth = 1;
+      // beam electrons: glowing dots with short streaks
+      ctx.lineWidth = 1.2;
       for (const b of st.beam) {
         const s = (t - b.t0) * b.v;
         if (s <= 0 || s > 1.02) continue;
         const a = Math.min(1, s / .03) * Math.min(1, (1.02 - s) / .06) * g;
         const p = at(main, s), off = b.off * (3 + s * 16) * k;
         const x = p.x + p.nx * off, y = p.y + p.ny * off;
-        ctx.globalAlpha = .9 * a;
-        ctx.beginPath(); ctx.arc(x, y, 1.7 * Math.max(.8, k), 0, 6.2832); ctx.fill();
-        const q = at(main, s - .018);
-        ctx.beginPath(); ctx.moveTo(q.x + q.nx * off, q.y + q.ny * off); ctx.lineTo(x, y); ctx.stroke();
+        const q = at(main, s - .024);
+        const qx = q.x + q.nx * off, qy = q.y + q.ny * off;
+        const sg = ctx.createLinearGradient(qx, qy, x, y);
+        sg.addColorStop(0, rgba(col.beam, 0)); sg.addColorStop(1, rgba(col.beam, .55 * a));
+        ctx.strokeStyle = sg; ctx.beginPath(); ctx.moveTo(qx, qy); ctx.lineTo(x, y); ctx.stroke();
+        ctx.globalAlpha = a;
+        ctx.drawImage(sprite.c, x - sprite.r * .5, y - sprite.r * .5, sprite.r, sprite.r);
       }
       ctx.globalAlpha = 1;
 
@@ -312,7 +409,7 @@
       for (const L of st.lang) {
         const age = t - L.tb; if (age < 0 || age > L.life) continue;
         const env = Math.sin(Math.PI * age / L.life);
-        wiggle(L.x, L.y, L.th, 24 * k, 3.5, 3.6 * k * env, L.ph + t * 9, col.langmuir, .9 * env * g, 1.4);
+        wiggle(L.x, L.y, L.th, 24 * k, 3.5, 3.6 * k * env, L.ph + t * 9, col.langmuir, .95 * env * g, 1.4);
       }
       // radio fronts: expanding arcs
       const rmax = Math.max(W, H) * .7;
@@ -321,10 +418,13 @@
         for (let j = 0; j < 3; j++) {
           const r = age * cR - j * f.lam; if (r <= 4 || r > rmax) continue;
           const a = (1 - r / rmax) * g * (1 - j * .25);
-          ctx.strokeStyle = rgba(col.radio, .9 * a); ctx.lineWidth = 1.6;
-          ctx.beginPath(); ctx.arc(f.x0, f.y0, r, f.dir - .42, f.dir + .42); ctx.stroke();
+          ctx.beginPath(); ctx.arc(f.x0, f.y0, r, f.dir - .42, f.dir + .42);
+          ctx.strokeStyle = rgba(col.radio, .2 * a); ctx.lineWidth = 6; ctx.stroke();
+          ctx.strokeStyle = rgba(col.radio, .95 * a); ctx.lineWidth = 1.6; ctx.stroke();
         }
       }
+      ctx.globalCompositeOperation = 'source-over';
+      drawDyn();
     }
 
     function frame(now) {
@@ -354,7 +454,6 @@
     new ResizeObserver(() => { layout(); draw(); }).observe(cv);
     new IntersectionObserver((e) => { onScreen = e[0].isIntersecting; kick(); }).observe(cv);
     document.addEventListener('visibilitychange', () => { onScreen = !document.hidden; kick(); });
-    darkMQ.addEventListener('change', () => { readColors(); layout(); draw(); });  // layout redraws the fluctuations
     reduceMQ.addEventListener('change', () => { if (reduceMQ.matches) { setPlaying(false); showStatic(); } });
     document.fonts && document.fonts.ready.then(draw);
   }
@@ -446,7 +545,7 @@
     '.block h2', '.block .intro', '.block > .wrap > .small', '.thesis-title', '#thesis .meta',
     '.block .prose > p', '.spectro figcaption', '.interests > li', '.results > .result',
     '.thesis-side', '.sim figcaption', '.sel > li', '.rows > div', '.tl.recent > li',
-    '.path > li', '.talks', '.contact .mail', '.contact .profiles', '.sub-h', '.obs-text',
+    '.path > li', '.talks', '.contact .mail', '.contact .profiles', '.sub-h', '.obs-text', '.stat-row > li',
   ];
   const RV_FIG = ['.spectro img', '.scheme', '.defense', '.sim-one video', '.pair > div', '.obs-fig', '.obs-pair > div'];
   const main = document.getElementById('main');
@@ -465,6 +564,26 @@
     });
     RV.forEach((s) => tag(s, false)); RV_FIG.forEach((s) => tag(s, true));
   }
+  // [data-in] elements get .in the first time they scroll into view; numbers count up then
+  const ins = [...document.querySelectorAll('[data-in]')];
+  function countUp(el) {
+    el.querySelectorAll('[data-count]').forEach((n) => {
+      const end = +n.dataset.count;
+      if (!motion() || end < 2) return;
+      const t0 = performance.now(), dur = 1300;
+      const step = (now) => {
+        const x = Math.min(1, (now - t0) / dur);
+        n.textContent = Math.round(end * (1 - Math.pow(1 - x, 3)));
+        if (x < 1) requestAnimationFrame(step);
+      };
+      n.textContent = '0'; requestAnimationFrame(step);
+    });
+  }
+  // result cards: a soft light follows the pointer
+  document.querySelectorAll('.result').forEach((el) => el.addEventListener('pointermove', (e) => {
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', (e.clientX - r.left) + 'px'); el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  }));
   const clamp = (x) => Math.max(0, Math.min(1, x));
   const ease = (x) => 1 - Math.pow(1 - x, 3);
   function style(o, r, vh) {
@@ -488,6 +607,11 @@
   function update() {
     queued = false;
     const vh = innerHeight;
+    ins.forEach((el) => {
+      if (el.classList.contains('in')) return;
+      const r = el.getBoundingClientRect();
+      if (r.top < vh * .9 && r.bottom > 0) { el.classList.add('in'); countUp(el); }
+    });
     // read everything first, then write, to avoid layout thrashing
     const rects = els.map((o) => o.el.getBoundingClientRect());
     const srects = secs.map((s) => s.getBoundingClientRect());
