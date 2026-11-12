@@ -17,6 +17,7 @@
     const btn = document.querySelector('.burst-toggle');
     const T = 17;            // cycle length [s]
     const STATIC_T = 9.5;    // frame shown when motion is reduced
+    const PACE = .6;         // animation seconds per real second: slows the whole scene
     let W = 0, H = 0, k = 1; // css size, scale factor vs 1200px reference
     let col = {};
     let cR = 100;
@@ -85,8 +86,8 @@
       };
       lines.push(mk(-1.2, -.1, .1), mk(-.85, -.04, .04), mk(-.5, .1, -.04), mk(-.2, .24, -.14));
       main = lines[1];
-      // radio fronts travel ~2x the mean beam speed (beam: .072-.122 of the line length per second)
-      cR = main.total * .2;
+      // radio fronts travel ~1.75x the mean beam speed (beam: .072-.122 of the line length per second)
+      cR = main.total * .17;
       const c = at(main, .64);
       src = { x: c.x, y: c.y + H * .04, rx: Math.max(78, W * .14), ry: Math.max(50, H * .24), ang: Math.atan2(c.ty, c.tx) * .5, sun };
       const Re = Math.max(16, Math.min(34, H * .1));
@@ -144,7 +145,7 @@
       }
       // radio fronts emitted from all along the path; wavelength grows outward (lower plasma frequency)
       const fronts = [];
-      const nf = W < 640 ? 12 : 18;
+      const nf = W < 640 ? 16 : 26;
       for (let i = 0; i < nf; i++) {
         const s = .08 + (i + R()) / nf * .9, p = at(main, s);
         const x0 = p.x + p.nx * gauss(R) * 8 * k, y0 = p.y + p.ny * gauss(R) * 8 * k;
@@ -330,7 +331,7 @@
       raf = 0;
       const dt = Math.min(.05, (now - last) / 1000 || 0); last = now;
       if (playing && onScreen) {
-        t += dt;
+        t += dt * PACE;
         if (t >= T) { t = 0; cycle++; reset(cycle); }
         draw();
         raf = requestAnimationFrame(frame);
