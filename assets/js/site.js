@@ -170,8 +170,8 @@
       };
       lines.push(mk(-1.2, -.1, .1), mk(-.85, -.04, .04), mk(-.5, .1, -.04), mk(-.2, .24, -.14));
       main = lines[1];
-      // radio fronts travel ~1.75x the mean beam speed (beam: .072-.122 of the line length per second)
-      cR = main.total * .17;
+      // radio fronts travel 1.5x the mean beam speed (beam: .072-.122 of the line length per second, mean .097)
+      cR = main.total * .1455;
       const c = at(main, .64);
       src = { x: c.x, y: c.y + HB * .04, ry: Math.max(50, HB * .24), sun };
       const Re = Math.max(16, Math.min(34, HB * .1));
@@ -277,7 +277,7 @@
       }
       // radio fronts emitted from all along the path; wavelength grows outward (lower plasma frequency)
       const fronts = [];
-      const nf = W < 640 ? 16 : 26;
+      const nf = W < 640 ? 22 : 36;
       for (let i = 0; i < nf; i++) {
         const s = .08 + (i + R()) / nf * .9, p = at(main, s);
         const x0 = p.x + p.nx * gauss(R) * 8 * k, y0 = p.y + p.ny * gauss(R) * 8 * k;
