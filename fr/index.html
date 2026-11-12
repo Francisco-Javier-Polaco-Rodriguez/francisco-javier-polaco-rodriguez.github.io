@@ -27,6 +27,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Francisco Javier Polanco-Rodríguez", "jobTitle": "Physicien des plasmas · Chercheur postdoctoral (ATER), Laboratoire de Physique des Plasmas, École Polytechnique", "affiliation": "Laboratoire de Physique des Plasmas, École Polytechnique", "email": "mailto:francisco.polanco@lpp.polytechnique.fr", "url": "https://francisco-javier-polaco-rodriguez.github.io/", "sameAs": ["https://orcid.org/0009-0005-2951-697X", "https://scholar.google.com/citations?user=uOhYwswAAAAJ&hl=en", "https://www.researchgate.net/profile/Francisco-Polanco-Rodriguez"]}</script>
 </head>
 <body>
+<canvas id="sky" aria-hidden="true"></canvas>
 <a class="skip" href="#main">Aller au contenu</a>
 
 <header class="bar">
@@ -214,9 +215,10 @@
         <p class="refs"><a href="https://doi.org/10.3847/2041-8213/ae626f" rel="noopener">ApJL 2026</a></p>
       </div>
       <figure class="obs-pair">
-        <div><img src="../assets/media/obs_solo.webp" width="1400" height="827" loading="lazy" alt="Forme d’onde de Solar Orbiter avec spectrogrammes des champs électrique et magnétique près de la fréquence plasma"><span class="tag">Solar Orbiter (RPW/TDS), vitesse du faisceau ≈ 0,21<i>c</i></span></div>
-        <div><img src="../assets/media/obs_sim.webp" width="1400" height="804" loading="lazy" alt="Forme d’onde simulée avec spectrogrammes des champs électrique et magnétique près de la fréquence plasma"><span class="tag">Simulation PIC, satellite virtuel, vitesse du faisceau 0,25<i>c</i></span></div>
+        <div><img src="../assets/media/obs_solo.webp" width="1400" height="827" loading="lazy" alt="Forme d’onde de Solar Orbiter avec spectrogrammes des champs électrique et magnétique près de la fréquence plasma"><span class="tag">Solar Orbiter (RPW/TDS), vitesse du faisceau ≈ 0,21<i>c</i></span><button type="button" class="listen" data-audio="../assets/audio/solo_decay_20220922.mp3"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="l-txt">Écouter</span></button></div>
+        <div><img src="../assets/media/obs_sim.webp" width="1400" height="804" loading="lazy" alt="Forme d’onde simulée avec spectrogrammes des champs électrique et magnétique près de la fréquence plasma"><span class="tag">Simulation PIC, satellite virtuel, vitesse du faisceau 0,25<i>c</i></span><button type="button" class="listen" data-audio="../assets/audio/sim_decay_Ex.mp3"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="l-txt">Écouter</span></button></div>
       </figure>
+      <p class="small obs-audio">Formes d’onde du champ électrique, ralenties pour que la fréquence plasma s’entende comme un la à 440 Hz : environ 100 fois plus lentement que le temps réel pour Solar Orbiter.</p>
     </div>
   </div>
 </section>
@@ -361,7 +363,7 @@
   <p></p>
 </dialog>
 
-<script type="application/json" id="i18n">{"copied": "Copié", "copy_bib": "Copier le BibTeX", "anim_pause": "Mettre l’animation en pause", "anim_play": "Lancer l’animation", "earth": "Terre"}</script>
+<script type="application/json" id="i18n">{"copied": "Copié", "copy_bib": "Copier le BibTeX", "anim_pause": "Mettre l’animation en pause", "anim_play": "Lancer l’animation", "earth": "Terre", "listen": "Écouter", "listen_stop": "Arrêter"}</script>
 <script src="../assets/js/site.js" defer></script>
 </body>
 </html>

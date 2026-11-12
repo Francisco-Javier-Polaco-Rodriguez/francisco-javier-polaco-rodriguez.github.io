@@ -245,7 +245,8 @@ def render(lang):
         path_html=''.join('<li><span class="yr">%s</span><span>%s</span></li>' % r for r in t['path']),
         pubs_html=pubs_html(t),
         js_strings=json.dumps(dict(copied=t['copied'], copy_bib=t['copy_bib'],
-                                   anim_pause=t['anim_pause'], anim_play=t['anim_play'], earth=t['earth']), ensure_ascii=False),
+                                   anim_pause=t['anim_pause'], anim_play=t['anim_play'], earth=t['earth'],
+                                   listen=t['listen'], listen_stop=t['listen_stop']), ensure_ascii=False),
         jsonld=json.dumps({
             '@context': 'https://schema.org', '@type': 'Person',
             'name': 'Francisco Javier Polanco-Rodríguez', 'jobTitle': strip_tags(t['hero_role']),

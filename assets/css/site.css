@@ -29,7 +29,7 @@
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 72px; background: var(--bg); }
 body {
   margin: 0;
-  background: var(--bg);
+  background: transparent;   /* the page colour is on <html>, so the fixed sky canvas shows through */
   color: var(--ink);
   font: 400 17px/1.55 var(--sans);
   font-variation-settings: "wdth" 96;
@@ -37,17 +37,8 @@ body {
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
-/* fixed star field behind the whole page */
-body::before {
-  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .55;
-  background-image:
-    radial-gradient(1px 1px at 12% 18%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 71% 9%, #cfe0ff 50%, transparent 51%),
-    radial-gradient(1.4px 1.4px at 38% 62%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 88% 47%, #ffe6c4 50%, transparent 51%),
-    radial-gradient(1px 1px at 56% 83%, #fff 50%, transparent 51%), radial-gradient(1.2px 1.2px at 6% 91%, #cfe0ff 50%, transparent 51%),
-    radial-gradient(1px 1px at 27% 38%, rgba(255, 255, 255, .7) 50%, transparent 51%), radial-gradient(1px 1px at 94% 76%, rgba(255, 255, 255, .7) 50%, transparent 51%),
-    radial-gradient(1px 1px at 47% 27%, rgba(255, 255, 255, .6) 50%, transparent 51%), radial-gradient(1px 1px at 79% 94%, rgba(255, 255, 255, .6) 50%, transparent 51%);
-  background-size: 520px 520px, 520px 520px, 520px 520px, 520px 520px, 520px 520px, 520px 520px, 330px 330px, 330px 330px, 330px 330px, 330px 330px;
-}
+/* fixed sky behind the whole page: real stars around Orion, drawn once by site.js */
+#sky { position: fixed; inset: 0; width: 100vw; height: 100lvh; max-width: none; z-index: -1; pointer-events: none; }
 img, video, canvas { display: block; max-width: 100%; height: auto; }
 a { color: var(--beam); text-decoration-thickness: 1px; text-underline-offset: .18em; }
 a:hover { text-decoration-thickness: 2px; }
@@ -329,6 +320,18 @@ figcaption { font: 400 14.5px/1.5 var(--serif); color: var(--ink-2); max-width: 
 .obs-pair img { aspect-ratio: 1400 / 827; object-fit: contain; }
 .obs-pair { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
 @media (max-width: 760px) { .obs-pair { grid-template-columns: 1fr; } }
+.listen { display: inline-flex; align-items: center; gap: 10px; margin-top: 12px; padding: 9px 16px 9px 12px; border-radius: 999px; cursor: pointer;
+  font: 600 14px/1 var(--sans); color: var(--ink); border: 1px solid color-mix(in srgb, var(--radio) 55%, transparent);
+  background: color-mix(in srgb, var(--radio) 14%, transparent); transition: background-color .2s ease, transform .15s ease; }
+.listen:hover { background: color-mix(in srgb, var(--radio) 26%, transparent); }
+.listen:active { transform: scale(.97); }
+.eq { display: inline-flex; align-items: center; gap: 2.5px; height: 16px; width: 20px; }
+.eq i { display: block; width: 3px; height: 100%; border-radius: 2px; background: var(--radio); transform-origin: 50% 50%; transform: scaleY(.3); }
+.eq i:nth-child(2) { transform: scaleY(.7); } .eq i:nth-child(3) { transform: scaleY(1); } .eq i:nth-child(4) { transform: scaleY(.5); }
+.listen.playing .eq i { animation: eq .7s ease-in-out infinite alternate; }
+.listen.playing .eq i:nth-child(2) { animation-delay: -.25s; } .listen.playing .eq i:nth-child(3) { animation-delay: -.5s; } .listen.playing .eq i:nth-child(4) { animation-delay: -.1s; }
+@keyframes eq { from { transform: scaleY(.25); } to { transform: scaleY(1); } }
+.obs-audio { margin-top: 16px; font-size: 14px; }
 
 /* teaching, honours, talks, about */
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 56px 72px; }

@@ -5,6 +5,77 @@
   const reduceMQ = matchMedia('(prefers-reduced-motion: reduce)');
 
   /* ================================================================
+     Fixed sky: the real stars around Orion (J2000 positions, visual
+     magnitudes), north up and east to the left as seen from Earth, plus
+     faint filler stars from a fixed seed. Drawn once; it does not move.
+     [RA hours, Dec degrees, magnitude, colour]
+     ================================================================ */
+  const sky = document.getElementById('sky');
+  if (sky) {
+    const B = '#CFE0FF', Wh = '#FFFFFF', O = '#FFB27C', Yl = '#FFE9C2';
+    const STARS = [
+      // Orion
+      [5.9195, 7.41, .5, O], [5.2423, -8.2, .13, B], [5.4189, 6.35, 1.64, B], [5.7959, -9.67, 2.06, B],
+      [5.6793, -1.94, 1.77, B], [5.6036, -1.2, 1.69, B], [5.5334, -.3, 2.23, B], [5.5856, 9.93, 3.4, B],
+      [5.5906, -5.91, 2.77, B], [5.5881, -5.39, 4, B], [5.5897, -4.84, 4.6, B], [5.4078, -2.4, 3.4, B],
+      [5.2933, -6.84, 3.6, B], [5.6458, -2.6, 3.8, B], [4.8306, 6.96, 3.19, Yl], [4.8534, 5.6, 3.69, B],
+      [4.9042, 2.44, 3.7, B], [4.8436, 8.9, 4.35, Wh], [4.915, 10.15, 4.6, Wh], [4.9758, 1.71, 4.5, O],
+      [6.0397, 9.65, 4.1, Wh], [6.1989, 14.21, 4.5, B], [6.1261, 14.77, 4.4, B], [5.9064, 20.28, 4.4, Yl], [6.0653, 20.14, 4.6, B],
+      // Taurus: Aldebaran, Hyades, Pleiades, horns
+      [4.5987, 16.51, .85, O], [4.4778, 15.87, 3.4, Wh], [4.4769, 19.18, 3.5, Yl], [4.33, 15.63, 3.65, Yl], [4.3822, 17.54, 3.8, Yl],
+      [3.7914, 24.11, 2.87, B], [3.8194, 24.05, 3.6, B], [3.7481, 24.11, 3.7, B], [3.7639, 24.37, 3.9, B], [3.7722, 23.95, 4.2, B], [3.7533, 24.47, 4.3, B], [3.8197, 24.14, 5, B],
+      [5.4382, 28.61, 1.65, B], [5.6275, 21.14, 3, B],
+      // Canis Major and Minor
+      [6.7525, -16.72, -1.46, Wh], [6.3783, -17.96, 1.98, B], [6.9771, -28.97, 1.5, B], [7.1399, -26.39, 1.84, Yl], [7.4016, -29.3, 2.45, B],
+      [7.655, 5.22, .34, Yl], [7.4525, 8.29, 2.9, B],
+      // Gemini
+      [7.7553, 28.03, 1.14, O], [7.5767, 31.89, 1.58, Wh], [6.6286, 16.4, 1.9, Wh], [6.3828, 22.51, 2.9, O], [6.7322, 25.13, 3, Yl],
+      [6.2481, 22.51, 3.3, O], [6.7547, 12.9, 3.4, Yl], [7.3353, 21.98, 3.5, Yl],
+      // Lepus, Eridanus, Auriga
+      [5.5456, -17.82, 2.58, Yl], [5.4708, -20.76, 2.84, Yl], [5.0911, -22.37, 3.2, O], [5.2156, -16.21, 3.3, B],
+      [5.1308, -5.09, 2.8, Wh], [5.2781, 46, .08, Yl],
+    ];
+    let lastW = 0, lastH = 0;
+    const drawSky = () => {
+      const W = innerWidth, H = W === lastW ? Math.max(innerHeight, lastH) : innerHeight;   // ignore mobile URL-bar shrinking
+      if (W === lastW && H === lastH) return;
+      lastW = W; lastH = H;
+      const dpr = Math.min(2, devicePixelRatio || 1), c = sky.getContext('2d');
+      sky.width = Math.round(W * dpr); sky.height = Math.round(H * dpr); sky.style.height = H + 'px';
+      c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, W, H);
+      // filler: faint stars from a fixed seed, so the sky is the same on every visit
+      let seed = 20260918;
+      const R = () => { seed = seed + 0x6D2B79F5 | 0; let r = Math.imul(seed ^ seed >>> 15, 1 | seed); r = r + Math.imul(r ^ r >>> 7, 61 | r) ^ r; return ((r ^ r >>> 14) >>> 0) / 4294967296; };
+      for (let i = 0, n = Math.round(W * H / 5200); i < n; i++) {
+        const m = R();
+        c.fillStyle = `rgba(${m > .8 ? '255,236,210' : '214,228,255'},${(.12 + .4 * m * m).toFixed(3)})`;
+        c.beginPath(); c.arc(R() * W, R() * H, .35 + .6 * m * m, 0, 6.2832); c.fill();
+      }
+      // Orion's belt sits right of centre, clear of the headline
+      const small = W < 760, sc = Math.min(H * .024, W / (small ? 26 : 40));
+      const cx = W * (small ? .5 : .7), cy = H * .4, ra0 = 5.6 * 15;
+      const hex = (h, a) => { const n = parseInt(h.slice(1), 16); return `rgba(${n >> 16 & 255},${n >> 8 & 255},${n & 255},${a})`; };
+      // the Orion Nebula, a faint pink smudge in the sword
+      const nx = cx - (5.5881 * 15 - ra0) * sc, ny = cy + 5.39 * sc, ng = c.createRadialGradient(nx, ny, 0, nx, ny, sc * .9);
+      ng.addColorStop(0, 'rgba(255,120,170,.3)'); ng.addColorStop(1, 'rgba(255,120,170,0)');
+      c.fillStyle = ng; c.beginPath(); c.arc(nx, ny, sc * .9, 0, 6.2832); c.fill();
+      for (const [ra, dec, mag, col] of STARS) {
+        const x = cx - (ra * 15 - ra0) * Math.cos(dec * Math.PI / 180) * sc, y = cy - dec * sc;
+        if (x < -10 || x > W + 10 || y < -10 || y > H + 10) continue;
+        const r = Math.max(.7, 2.7 - .45 * mag), a = Math.min(1, Math.max(.5, 1 - mag * .1));
+        if (mag < 2.9) {
+          const g = c.createRadialGradient(x, y, 0, x, y, r * 5);
+          g.addColorStop(0, hex(col, .42)); g.addColorStop(1, hex(col, 0));
+          c.fillStyle = g; c.beginPath(); c.arc(x, y, r * 5, 0, 6.2832); c.fill();
+        }
+        c.fillStyle = hex(col, a); c.beginPath(); c.arc(x, y, r, 0, 6.2832); c.fill();
+      }
+    };
+    drawSky();
+    addEventListener('resize', drawSky);
+  }
+
+  /* ================================================================
      Type III burst animation.
      One cycle: flare -> beam along the open field line -> Langmuir packets
      and radio fronts all along the beam path. Density fluctuations fill
@@ -216,9 +287,7 @@
         const tb = 1.8 + s / .1 + R() * .6;
         fronts.push({ x0, y0, tb, dir, lam: (7 + s * 14) * k, trc: r < .5 ? tb + dist / cR : Infinity });
       }
-      const stars = [];
-      for (let i = 0; i < 110; i++) stars.push({ x: R() * W, y: R() * H * .95, r: .4 + R() * 1.1, a: .25 + R() * .6, w: R() * 6.28 });
-      st = { beam, lang, fronts, stars };
+      st = { beam, lang, fronts };
     }
 
     // ---------- drawing
@@ -376,10 +445,6 @@
       const g = t < .4 ? t / .4 : t > T - 1.4 ? Math.max(0, (T - t) / 1.4) : 1;
       const u = Math.max(.8, k);
 
-      for (const s of st.stars) {
-        ctx.fillStyle = rgba('#FFFFFF', s.a * (.7 + .3 * Math.sin(t * .8 + s.w)));
-        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.2832); ctx.fill();
-      }
       ctx.drawImage(fluct, 0, 0, W, H);
 
       // field lines, fading away from the Sun; the beam's line is brighter
@@ -554,6 +619,22 @@
       d.classList.toggle('open', open);
     });
   });
+  // Listen buttons: one waveform at a time, only on request
+  let audio = null, audioBtn = null;
+  const stopAudio = () => {
+    if (!audio) return;
+    audio.pause(); audioBtn.classList.remove('playing'); audioBtn.querySelector('.l-txt').textContent = S.listen;
+    audio = audioBtn = null;
+  };
+  document.querySelectorAll('.listen').forEach((b) => b.addEventListener('click', () => {
+    const same = audioBtn === b;
+    stopAudio();
+    if (same) return;
+    audio = new Audio(b.dataset.audio); audioBtn = b;
+    b.classList.add('playing'); b.querySelector('.l-txt').textContent = S.listen_stop;
+    audio.addEventListener('ended', stopAudio);
+    audio.play().catch(stopAudio);
+  }));
   const lb = document.getElementById('lightbox');
   if (lb) {
     const img = lb.querySelector('img'), cap = lb.querySelector('p');

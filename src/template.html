@@ -22,6 +22,7 @@
 <script type="application/ld+json">{{jsonld}}</script>
 </head>
 <body>
+<canvas id="sky" aria-hidden="true"></canvas>
 <a class="skip" href="#main">{{skip}}</a>
 
 <header class="bar">
@@ -209,9 +210,10 @@
         <p class="refs">{{obs2_ref}}</p>
       </div>
       <figure class="obs-pair">
-        <div><img src="{{root}}assets/media/obs_solo.webp" width="1400" height="827" loading="lazy" alt="{{obs_solo_alt}}"><span class="tag">{{obs_solo}}</span></div>
-        <div><img src="{{root}}assets/media/obs_sim.webp" width="1400" height="804" loading="lazy" alt="{{obs_sim_alt}}"><span class="tag">{{obs_sim}}</span></div>
+        <div><img src="{{root}}assets/media/obs_solo.webp" width="1400" height="827" loading="lazy" alt="{{obs_solo_alt}}"><span class="tag">{{obs_solo}}</span><button type="button" class="listen" data-audio="{{root}}assets/audio/solo_decay_20220922.mp3"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="l-txt">{{listen}}</span></button></div>
+        <div><img src="{{root}}assets/media/obs_sim.webp" width="1400" height="804" loading="lazy" alt="{{obs_sim_alt}}"><span class="tag">{{obs_sim}}</span><button type="button" class="listen" data-audio="{{root}}assets/audio/sim_decay_Ex.mp3"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="l-txt">{{listen}}</span></button></div>
       </figure>
+      <p class="small obs-audio">{{obs_audio}}</p>
     </div>
   </div>
 </section>
